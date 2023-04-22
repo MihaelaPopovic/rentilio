@@ -12,7 +12,7 @@ function App() {
       <div>
         <Navigation />
         <Routes>
-          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/" element={<AdminLogin />} />
           {/* <Route path="/rent" element={<Rent />} />
                 <Route path="/contact" element={<Contact />} /> */}
         </Routes>
