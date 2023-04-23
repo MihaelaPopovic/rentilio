@@ -1,4 +1,3 @@
-// AdminContext.js
 import React from 'react';
 import Admin from './../stores/Admin';
 

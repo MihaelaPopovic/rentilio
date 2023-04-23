@@ -78,16 +78,36 @@ p {
     outline: 0.5px solid var(--accent-color);
   }
 }
-.submit-btn {
+.btn {
   width: 150px;
   height: 55px;
 
   font-size: 20px;
-  color: #F5F5F5;
-  background-color: #303841;
+ 
 
   border-radius: 10px;
   border: none;
   
   cursor: pointer;
+}
+.btn-outline {
+  color: var(--accent-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--accent-color)
+} 
+.btn-fill {
+  color: var(--background-color);
+  background-color: var(--accent-color);
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  margin-block: 50px;
+  .width-wrapper {
+    display: flex;
+
+    width: 80%;
+  }
 }
