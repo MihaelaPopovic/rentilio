@@ -1,29 +1,40 @@
+import React, { useContext, useEffect, useState } from "react";
 import "./AdminDashboard.scss";
-import VehicleBrands from "./../../components/vehicle-brands/VehicleBrands"
+import { VehicleBrandContext } from "./../../contexts/VehicleBrandContext";
+import VehicleBrands from "./../../components/vehicle-brands/VehicleBrands";
+import VehicleBrandFormCreate from "./../../components/vehicle-brand-form-create/VehicleBrandFormCreate";
+import Loader from "./../../components/loader/Loader";
 
-const AdminDashboard = () => {
- /*  const handleSubmit = async (e) => {
-    e.preventDefault();
-   const collectionRef = collection(database, "users");
-    addDoc(collectionRef, {
-      email: 'test@gmail.com',
-      name: 'test',
-      password: '123'
-    })
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error);
-      }); 
+function AdminDashboard() {
+  const { getVehicleBrands, isLoading } = useContext(VehicleBrandContext);
+  const [brands, setBrands] = useState();
 
-  }; */
+  const fetchData = async () => {
+    const loadedBrands = await getVehicleBrands();
+    setBrands(loadedBrands);
+  };
+  const handleSave = async () => {
+    await fetchData();
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [getVehicleBrands]);
   return (
     <div className="wrapper">
-      <VehicleBrands />
- 
+      <div className="width-wrapper">
+        <h2>Vehicles</h2>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="vehicles">
+            <VehicleBrandFormCreate onSave={handleSave} />
+            <VehicleBrands brands={brands} onSave={handleSave} />
+          </div>
+        )}
+      </div>
     </div>
   );
-};
+}
 
 export default AdminDashboard;

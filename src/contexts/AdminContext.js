@@ -1,12 +1,12 @@
-import React from 'react';
-import Admin from './../stores/Admin';
+import React from "react";
+import Admin from "./../stores/Admin";
 
 export const AdminContext = React.createContext(new Admin());
 
-export const AdminProvider = ({ children }) => {
+export function AdminProvider({ children }) {
   return (
     <AdminContext.Provider value={new Admin()}>
       {children}
     </AdminContext.Provider>
   );
-};
+}

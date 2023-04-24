@@ -1,34 +1,29 @@
-import "./VehicleBrandCollapse.scss";
-import React, {  useEffect} from "react";
+import React from "react";
 import { Collapse } from "antd";
-import { FiSettings } from "react-icons/fi";
+import "./VehicleBrandCollapse.scss";
+import VehicleBrandFormEdit from "../vehicle-brand-form-edit/VehicleBrandFormEdit";
+import VehicleBrandDelete from "../vehicle-brand-delete/VehicleBrandDelete";
 
-const VehicleBrandCollapse = ({ brand}) => {
-    useEffect(() => {console.log(brand)}, [brand])
+function VehicleBrandCollapse({ brand, onSave }) {
   const { Panel } = Collapse;
-  const genExtra = () => (
 
-    <FiSettings
-      onClick={(event) => {
-        event.stopPropagation();
-      }}
-    />
+  const genExtra = () => (
+    <>
+      <VehicleBrandFormEdit brand={brand} onSave={onSave} />
+      <VehicleBrandDelete brand={brand} onSave={onSave} />
+    </>
   );
   return (
     <Collapse>
-      <Panel header={brand.name}  extra={genExtra()}>
+      <Panel header={brand.name} extra={genExtra()}>
         {brand.models.map((model) => (
-            <div key={model.id}>
-
-            <p>{model.name}</p>
-            <p>{model.abrv}</p>
-          
-            </div>
+          <div key={model.id}>
+            <p> {model.name} </p> <p> {model.abrv} </p>
+          </div>
         ))}
-
       </Panel>
     </Collapse>
   );
-};
+}
 
 export default VehicleBrandCollapse;

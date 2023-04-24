@@ -1,12 +1,12 @@
-import React from 'react';
-import VehicleBrand from './../stores/VehicleBrands';
+import React from "react";
+import VehicleBrand from "./../stores/VehicleBrands";
 
 export const VehicleBrandContext = React.createContext(new VehicleBrand());
 
-export const VehicleBrandProvider = ({ children }) => {
+export function VehicleBrandProvider({ children }) {
   return (
     <VehicleBrandContext.Provider value={new VehicleBrand()}>
       {children}
     </VehicleBrandContext.Provider>
   );
-};
+}

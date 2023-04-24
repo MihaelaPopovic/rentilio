@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import { AiOutlineClose } from "react-icons/ai";
 import "./Navigation.scss";
 
-const Navigation = () => {
+function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -63,5 +62,5 @@ const Navigation = () => {
       </nav>
     </div>
   );
-};
+}
 export default Navigation;

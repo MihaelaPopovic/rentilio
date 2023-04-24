@@ -21,11 +21,10 @@ function App() {
     }
   };
 
- 
   return (
     <div>
       <Router>
-      <Navigation />
+        <Navigation />
         <Switch>
           <GuardProvider guards={[requireLogin]}>
             <GuardedRoute

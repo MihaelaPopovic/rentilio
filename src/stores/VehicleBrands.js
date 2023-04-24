@@ -1,20 +1,19 @@
-import { database } from "./../firebase";
-import { makeAutoObservable } from "mobx";
-import { collection, addDoc } from "firebase/firestore";
+import { makeAutoObservable, action } from "mobx";
 import axios from "axios";
 export default class VehicleBrands {
-  vehicleBrand = {
-    name: "",
-    abrv: "",
-  };
+  name;
+  abrv;
+  isLoading = true;
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      getVehicleBrands: action,
+    });
   }
   setName(name) {
-    this.vehicleBrand.name = name;
+    this.name = name;
   }
   setAbrv(abrv) {
-    this.vehicleBrand.abrv = abrv;
+    this.abrv = abrv;
   }
   setError(error) {
     this.error = error;
@@ -37,7 +36,7 @@ export default class VehicleBrands {
           models: [],
         })
       );
-      brandsData.map(async (brand) => {
+      for (let brand of brandsData) {
         const runQuery = {
           structuredQuery: {
             from: [
@@ -78,7 +77,8 @@ export default class VehicleBrands {
           "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents:runQuery",
           runQuery
         );
-         const models = modelResponse.data.map((data) => {
+        if (modelResponse.data[0].document) {
+          const models = modelResponse.data.map((data) => {
             return {
               id: data.document.name.split("/").pop(),
               name: data.document.fields.name.stringValue,
@@ -87,7 +87,8 @@ export default class VehicleBrands {
             };
           });
           brand.models = models;
-      });
+        }
+      }
       this.setIsLoading(false);
 
       return brandsData;
@@ -97,26 +98,57 @@ export default class VehicleBrands {
       return [];
     }
   };
-  storeVehicle = async () => {
+  storeVehicleBrand = async () => {
     try {
-      this.setIsLoading(true);
-      const collectionRef = collection(database, "vehicle_models");
-      addDoc(collectionRef, {
-        name: "X5",
-        abrv: "X5",
-        doors: 5,
-        vehicle_brand_id: "5dorXId2M8vUEERCDWyi",
-      })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      this.setIsLoading(false);
+      const data = {
+        fields: {
+          name: {
+            stringValue: this.name,
+          },
+          abrv: {
+            stringValue: this.abrv,
+          },
+        },
+      };
+      await axios.post(
+        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands",
+        data
+      );
     } catch (error) {
       this.setError(error.message);
-      this.setIsLoading(false);
+    }
+  };
+  editVehicleBrand = async (brandId) => {
+    try {
+      const data = {
+        fields: {
+          name: {
+            stringValue: this.name,
+          },
+          abrv: {
+            stringValue: this.abrv,
+          },
+        },
+      };
+      await axios.patch(
+        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/"+brandId,
+        data
+      );
+    } catch (error) {
+      this.setError(error.message);
+    }
+  };
+  deleteVehicleBrand = async (brandId) => {
+    try {
+      this.setIsLoading(true);
+      await axios.delete(
+        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/"+brandId);
+        this.setIsLoading(false);
+    
+      } catch (error) {
+        this.setIsLoading(false);
+
+      this.setError(error.message);
     }
   };
 }
