@@ -1,7 +1,7 @@
 .wrapper {
     .row {
         flex-direction: row;
-        padding-block: 50px;
+        padding-block: 80px;
 
         .side {
             display: flex;
@@ -33,7 +33,7 @@
 
     .column {
         flex-direction: column;
-        padding-block: 50px;
+        padding-block: 80px;
 
         .cards-wrapper {
             display: flex;
@@ -65,7 +65,13 @@
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
         }
-
+        .cars {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 50px;
+        }
         .review-wrapper {
             display: flex;
             justify-content: space-between;
@@ -88,11 +94,12 @@
                 }
             }
 
-            .text-wrapper {
+            .text {
                 display: flex;
                 flex-direction: column;
                 width: 40%;
                 margin-top: 30px;
+                line-height: 35px;
             }
         }
     }

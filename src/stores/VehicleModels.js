@@ -39,6 +39,7 @@ export default class VehicleModels {
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
   }
+  
   storeVehicleModel = async (brandId) => {
     try {
       this.messageApi.open({

@@ -18,13 +18,8 @@ function Navigation() {
             </Link>
           </li>
           <li>
-            <Link className="link" to="/rent">
-              Rent
-            </Link>
-          </li>
-          <li>
-            <Link className="link" to="/contact">
-              Contact
+            <Link className="link" to="/cars" >
+            Cars
             </Link>
           </li>
         </ul>
@@ -51,11 +46,8 @@ function Navigation() {
             <Link className="link" to="/">
               Home
             </Link>
-            <Link className="link" to="/rent">
-              Rent
-            </Link>
-            <Link className="link" to="/contact">
-              Contact
+            <Link className="link" >
+              Cars
             </Link>
           </div>
         </div>
