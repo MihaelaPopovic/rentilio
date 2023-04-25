@@ -11,7 +11,7 @@ function AdminLogin() {
     if (adminLogin.getIsLoggedIn()) {
       history.push("/dashboard");
     }
-  }, [adminLogin.getIsLoggedIn()]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [adminLogin.getIsLoggedIn()]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
