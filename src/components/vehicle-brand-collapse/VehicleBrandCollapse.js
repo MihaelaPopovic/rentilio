@@ -3,6 +3,8 @@ import { Collapse } from "antd";
 import "./VehicleBrandCollapse.scss";
 import VehicleBrandFormEdit from "../vehicle-brand-form-edit/VehicleBrandFormEdit";
 import VehicleBrandDelete from "../vehicle-brand-delete/VehicleBrandDelete";
+import VehicleModelsTable from "../vehicle-models-table/VehicleModelsTable";
+import VehicleModelFormCreate from "../vehicle-model-form-create/VehicleModelFormCreate";
 
 function VehicleBrandCollapse({ brand, onSave }) {
   const { Panel } = Collapse;
@@ -13,14 +15,12 @@ function VehicleBrandCollapse({ brand, onSave }) {
       <VehicleBrandDelete brand={brand} onSave={onSave} />
     </>
   );
+  
   return (
     <Collapse>
       <Panel header={brand.name} extra={genExtra()}>
-        {brand.models.map((model) => (
-          <div key={model.id}>
-            <p> {model.name} </p> <p> {model.abrv} </p>
-          </div>
-        ))}
+        <VehicleModelFormCreate brand={brand} />
+        <VehicleModelsTable models={brand.models} />
       </Panel>
     </Collapse>
   );

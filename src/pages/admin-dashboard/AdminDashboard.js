@@ -19,7 +19,8 @@ function AdminDashboard() {
 
   useEffect(() => {
     fetchData();
-  }, [getVehicleBrands]);
+  }, [getVehicleBrands]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="wrapper">
       <div className="width-wrapper">

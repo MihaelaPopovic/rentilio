@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
-import VehicleBrandFormPopup from "../vehicle-brand-form-popup/VehicleBrandFormPopup";
 
-function VehicleBrandFormEditButton({ brand, onSave }) {
+import VehicleModelFormPopup from "./../vehicle-model-form-popup/VehicleModelFormPopup";
+
+function VehicleModelFormEdit({ model }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
@@ -15,16 +16,14 @@ function VehicleBrandFormEditButton({ brand, onSave }) {
         }}
       />
       {isEditModalOpen && (
-        <VehicleBrandFormPopup
+        <VehicleModelFormPopup
           isModalOpen={isEditModalOpen}
           setIsModalOpen={setIsEditModalOpen}
           isEditing={true}
-          brand={brand}
-          onSave={onSave}
+          model={model}
         />
       )}
     </>
   );
 }
-
-export default VehicleBrandFormEditButton;
+export default VehicleModelFormEdit;

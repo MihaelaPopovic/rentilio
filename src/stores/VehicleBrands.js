@@ -1,22 +1,20 @@
-import { makeAutoObservable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import axios from "axios";
+import { message } from "antd";
+
 export default class VehicleBrands {
+  messageApi = message;
   name;
   abrv;
   isLoading = true;
   constructor() {
-    makeAutoObservable(this, {
-      getVehicleBrands: action,
-    });
+    makeAutoObservable(this);
   }
   setName(name) {
     this.name = name;
   }
   setAbrv(abrv) {
     this.abrv = abrv;
-  }
-  setError(error) {
-    this.error = error;
   }
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
@@ -67,7 +65,19 @@ export default class VehicleBrands {
                   fieldPath: "abrv",
                 },
                 {
-                  fieldPath: "doors",
+                  fieldPath: "seats",
+                },
+                {
+                  fieldPath: "gearShift",
+                },
+                {
+                  fieldPath: "fuelConsumption",
+                },
+                {
+                  fieldPath: "picture",
+                },
+                {
+                  fieldPath: "price",
                 },
               ],
             },
@@ -83,7 +93,11 @@ export default class VehicleBrands {
               id: data.document.name.split("/").pop(),
               name: data.document.fields.name.stringValue,
               abrv: data.document.fields.abrv.stringValue,
-              doors: data.document.fields.doors.integerValue,
+              seats: data.document.fields.seats.integerValue,
+              fuelConsumption: data.document.fields.fuelConsumption.doubleValue,
+              gearShift: data.document.fields.gearShift.stringValue,
+              picture: data.document.fields.picture.stringValue,
+              price: data.document.fields.price.doubleValue,
             };
           });
           brand.models = models;
@@ -93,13 +107,18 @@ export default class VehicleBrands {
 
       return brandsData;
     } catch (error) {
-      this.setError(error.message);
-      this.setIsLoading(false);
-      return [];
+      this.messageApi.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
     }
   };
   storeVehicleBrand = async () => {
     try {
+      this.messageApi.open({
+        type: "info",
+        content: "Saving brand...",
+      });
       const data = {
         fields: {
           name: {
@@ -114,12 +133,23 @@ export default class VehicleBrands {
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands",
         data
       );
+      this.messageApi.open({
+        type: "success",
+        content: "Brand saved!",
+      });
     } catch (error) {
-      this.setError(error.message);
+      this.messageApi.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
     }
   };
   editVehicleBrand = async (brandId) => {
     try {
+      this.messageApi.open({
+        type: "info",
+        content: "Updating brand...",
+      });
       const data = {
         fields: {
           name: {
@@ -131,24 +161,41 @@ export default class VehicleBrands {
         },
       };
       await axios.patch(
-        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/"+brandId,
+        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/" +
+          brandId,
         data
       );
+      this.messageApi.open({
+        type: "success",
+        content: "Brand updated!",
+      });
     } catch (error) {
-      this.setError(error.message);
+      this.messageApi.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
     }
   };
   deleteVehicleBrand = async (brandId) => {
     try {
-      this.setIsLoading(true);
+      this.messageApi.open({
+        type: "info",
+        content: "Deleting brand...",
+      });
       await axios.delete(
-        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/"+brandId);
-        this.setIsLoading(false);
-    
-      } catch (error) {
-        this.setIsLoading(false);
-
-      this.setError(error.message);
+        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/" +
+          brandId
+      );
+      this.setIsLoading(false);
+      this.messageApi.open({
+        type: "success",
+        content: "Brand deleted!",
+      });
+    } catch (error) {
+      this.messageApi.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
     }
   };
 }

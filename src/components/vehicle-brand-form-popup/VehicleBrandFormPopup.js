@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import "./VehicleBrandFormPopup.scss";
 import { VehicleBrandContext } from "../../contexts/VehicleBrandContext";
 
-function VehicleFormPopup({
+function VehicleBrandFormPopup({
   isModalOpen,
   setIsModalOpen,
   isEditing,
@@ -63,4 +63,4 @@ function VehicleFormPopup({
   );
 }
 
-export default VehicleFormPopup;
+export default VehicleBrandFormPopup;

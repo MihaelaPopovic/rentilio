@@ -1,7 +1,9 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./../firebase";
 import { makeAutoObservable } from "mobx";
+import axios from "axios";
+import { message } from "antd";
+
 export default class Admin {
+  messageApi = message;
   email;
   password;
   error = null;
@@ -26,30 +28,45 @@ export default class Admin {
     this.isLoading = isLoading;
   }
   getIsLoggedIn() {
-    if(localStorage.getItem("admin")) {
+    if (localStorage.getItem("admin")) {
       return true;
-    } 
+    }
     return false;
   }
   setLoggedIn(user) {
-    localStorage.setItem("admin",user._tokenResponse.refreshToken);
+    localStorage.setItem("admin", user.refreshToken);
   }
   signIn = async (history) => {
     try {
+      this.messageApi.open({
+        type: "info",
+        content: "Logging in...",
+      });
       this.setIsLoading(true);
-
-      const user = await signInWithEmailAndPassword(
-        auth,
-        this.email,
-        this.password
+      const data = {
+        email: this.email,
+        password: this.password,
+        returnSecureToken: true,
+      };
+      const response = await axios.post(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB769VRkyrO5hOXklG8Sc0mQUKDYU4YQus",
+        data
       );
-      if (user) {
-        this.setLoggedIn(user);
+
+      if (response.data) {
+        this.setLoggedIn(response.data);
         history.push("/dashboard");
       }
+      this.messageApi.open({
+        type: "success",
+        content: "You are logged in!",
+      });
       this.setIsLoading(false);
     } catch (error) {
-      this.setError(error.message);
+      this.messageApi.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
       this.setIsLoading(false);
     }
   };
