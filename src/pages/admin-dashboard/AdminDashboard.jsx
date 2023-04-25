@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./AdminDashboard.scss";
-import { VehicleBrandContext } from "./../../contexts/VehicleBrandContext";
-import VehicleBrands from "./../../components/vehicle-brands/VehicleBrands";
-import VehicleBrandFormCreate from "./../../components/vehicle-brand-form-create/VehicleBrandFormCreate";
-import Loader from "./../../components/loader/Loader";
+import { VehicleBrandContext } from "../../contexts/VehicleBrandContext";
+import VehicleBrands from "../../components/vehicle-brand/vehicle-brands/VehicleBrands";
+import VehicleBrandFormCreate from "../../components/vehicle-brand/vehicle-brand-form-create/VehicleBrandFormCreate";
+import Loader from "../../components/loader/Loader";
 
 function AdminDashboard() {
   const { getVehicleBrands, isLoading } = useContext(VehicleBrandContext);
@@ -19,7 +19,7 @@ function AdminDashboard() {
 
   useEffect(() => {
     fetchData();
-  }, [getVehicleBrands]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [getVehicleBrands]);
 
   return (
     <div className="wrapper">

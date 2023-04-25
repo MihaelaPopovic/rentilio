@@ -1,18 +1,19 @@
 import React, { useContext } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Modal } from "antd";
-import { VehicleModelContext } from "./../../contexts/VehicleModelContext";
+import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
 
-function VehicleModelDelete({ model }) {
+function VehicleBrandDelete({ brand, onSave }) {
   const { confirm } = Modal;
-  const { deleteVehicleModel } = useContext(VehicleModelContext);
+  const { deleteVehicleBrand } = useContext(VehicleBrandContext);
 
   const handleDelete = async () => {
-    await deleteVehicleModel(model.key);
+    await deleteVehicleBrand(brand.id);
+    await onSave();
   };
   const showConfirm = () => {
     confirm({
-      title: "Do you want to delete these model?",
+      title: "Do you want to delete these brand?",
       onOk() {
         handleDelete();
       },
@@ -32,4 +33,4 @@ function VehicleModelDelete({ model }) {
   );
 }
 
-export default VehicleModelDelete;
+export default VehicleBrandDelete;

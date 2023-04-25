@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Modal } from "antd";
 import "./VehicleBrandFormPopup.scss";
-import { VehicleBrandContext } from "../../contexts/VehicleBrandContext";
+import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
 
 function VehicleBrandFormPopup({
   isModalOpen,

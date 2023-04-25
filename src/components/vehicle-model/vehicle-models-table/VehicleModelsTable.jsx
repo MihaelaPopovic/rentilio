@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Space } from "antd";
-import VehicleModelDelete from "./../vehicle-model-delete/VehicleModelDelete";
-import VehicleModelFormEdit from "./../vehicle-model-form-edit/VehicleModelFormEdit";
+import VehicleModelDelete from "../vehicle-model-delete/VehicleModelDelete";
+import VehicleModelFormEdit from "../vehicle-model-form-edit/VehicleModelFormEdit";
 
 function VehicleModelsTable({ models }) {
   const dataSource = models.map((model) => {

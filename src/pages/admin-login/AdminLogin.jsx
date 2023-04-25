@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "antd";
 import "./AdminLogin.scss";
-import { AdminContext } from "./../../contexts/AdminContext";
+import { AdminContext } from "../../contexts/AdminContext";
 
 function AdminLogin() {
   const adminLogin = useContext(AdminContext);

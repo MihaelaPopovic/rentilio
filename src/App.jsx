@@ -6,6 +6,7 @@ import Navigation from "./layouts/Navigation";
 import AdminDashboard from "./pages/admin-dashboard/AdminDashboard";
 import AdminLogin from "./pages/admin-login/AdminLogin";
 import NotFound from "./pages/not-found/NotFound";
+import Homepage from "./pages/homepage/Homepage";
 
 function App() {
   const adminLogin = useContext(AdminContext);
@@ -25,8 +26,11 @@ function App() {
     <div>
       <Router>
         <Navigation />
-        <Switch>
-          <GuardProvider guards={[requireLogin]}>
+        <GuardProvider guards={[requireLogin]}>
+          <Switch>
+            <Route exact path="/">
+              <Homepage />
+            </Route>
             <GuardedRoute
               path="/dashboard"
               exact
@@ -36,9 +40,11 @@ function App() {
               }}
             />
             <Route exact path="/admin-login" component={AdminLogin} />
-          </GuardProvider>
-          <Route component={NotFound} />
-        </Switch>
+            <Route exact path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </GuardProvider>
       </Router>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 
-import VehicleModelFormPopup from "./../vehicle-model-form-popup/VehicleModelFormPopup";
+import VehicleModelFormPopup from "../vehicle-model-form-popup/VehicleModelFormPopup";
 
 function VehicleModelFormEdit({ model }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

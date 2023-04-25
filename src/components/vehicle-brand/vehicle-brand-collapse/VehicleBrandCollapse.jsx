@@ -3,8 +3,8 @@ import { Collapse } from "antd";
 import "./VehicleBrandCollapse.scss";
 import VehicleBrandFormEdit from "../vehicle-brand-form-edit/VehicleBrandFormEdit";
 import VehicleBrandDelete from "../vehicle-brand-delete/VehicleBrandDelete";
-import VehicleModelsTable from "../vehicle-models-table/VehicleModelsTable";
-import VehicleModelFormCreate from "../vehicle-model-form-create/VehicleModelFormCreate";
+import VehicleModelsTable from "../../vehicle-model/vehicle-models-table/VehicleModelsTable";
+import VehicleModelFormCreate from "../../vehicle-model/vehicle-model-form-create/VehicleModelFormCreate";
 
 function VehicleBrandCollapse({ brand, onSave }) {
   const { Panel } = Collapse;

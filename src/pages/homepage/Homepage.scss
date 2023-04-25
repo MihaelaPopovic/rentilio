@@ -1,0 +1,103 @@
+.wrapper {
+    .row {
+        flex-direction: row;
+        padding-block: 50px;
+
+        .side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+
+            .title {
+                margin-bottom: 50px;
+            }
+
+            .banner {
+                width: 100%;
+            }
+
+            .cta {
+                width: 250px;
+                height: 50px;
+                margin-top: 50px;
+                color: var(--background-color);
+                font-size: 20px;
+                background-color: var(--accent-color);
+                border-radius: 10px;
+                border: unset;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .column {
+        flex-direction: column;
+        padding-block: 50px;
+
+        .cards-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+
+            .card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 30%;
+                padding: 50px;
+
+                .card-icon {
+                    width: 128px;
+                }
+
+                .bottom {
+                    .subtitle {
+                        margin-block: 40px;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .card:hover {
+                background-color: #fff;
+                border-radius: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .review-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .subtitle {
+                width: 30%;
+            }
+
+            .picture-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 250px;
+                height: 250px;
+                background-color: #D6E6F2;
+                border-radius: 205px;
+
+                .yoda {
+                    width: 300px;
+                }
+            }
+
+            .text-wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 40%;
+                margin-top: 30px;
+            }
+        }
+    }
+}
+
+.background {
+    background-color: var(--light-blue-color);
+}

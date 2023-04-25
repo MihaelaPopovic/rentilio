@@ -5,7 +5,7 @@ import "./NotFound.scss";
 function NotFound() {
   return (
     <div className="wrapper">
-      <div className="width-wrapper">
+      <div className="width-wrapper column">
         <div className="image-wrapper">
           <img
             alt="404"

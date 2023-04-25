@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GrAdd } from "react-icons/gr";
 import { Button } from "antd";
-import VehicleModelFormPopup from "./../vehicle-model-form-popup/VehicleModelFormPopup";
+import VehicleModelFormPopup from "../vehicle-model-form-popup/VehicleModelFormPopup";
 
 function VehicleModelFormCreate({ brand }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
