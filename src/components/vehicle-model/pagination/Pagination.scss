@@ -2,6 +2,7 @@
     .pagination-wrapper {
         display: flex;
         justify-content: center;
+        margin-top: 30px;
 
         .pagination {
             display: flex;
@@ -20,15 +21,25 @@
                 border-radius: 10px;
                 cursor: pointer;
             }
+
             .active {
                 color: var(--background-color);
                 background-color: var(--accent-color);
             }
+
             .disable {
                 pointer-events: none;
             }
         }
+    }
 
-   
+    .input-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+        .input {
+            width: 50%;
+        }
+
     }
 }

@@ -9,15 +9,44 @@ import { AiOutlineRight } from "react-icons/ai";
 function Pagination() {
   const { getVehicleBrands, isLoading } = useContext(VehicleBrandContext);
   const [models, setModels] = useState();
-
+  const [filteredItems, setFilteredItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = models
+  const currentItems = filteredItems.length
+    ? filteredItems.slice(indexOfFirstItem, indexOfLastItem)
+    : models
     ? models.slice(indexOfFirstItem, indexOfLastItem)
     : [];
-  const totalPages = models ? Math.ceil(models.length / itemsPerPage) : 0;
+  const totalPages = filteredItems.length
+    ? Math.ceil(filteredItems.length / itemsPerPage)
+    : models
+    ? Math.ceil(models.length / itemsPerPage)
+    : 0;
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchModels = (search) => {
+    setSearchQuery(search);
+    if (search) {
+      const filteredItems = models.filter((item) => {
+        return (
+          item.name.toLowerCase().includes(search.toLowerCase()) ||
+          item.abrv.toLowerCase().includes(search.toLowerCase()) ||
+          item.fuelConsumption.toString().includes(search) ||
+          item.gearShift.toLowerCase().includes(search.toLowerCase()) ||
+          item.price.toString().includes(search.toLowerCase()) ||
+          item.seats.includes(search.toLowerCase()) ||
+          item.brand.name.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+      setFilteredItems(filteredItems);
+    } else {
+      setFilteredItems([]);
+    }
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
     fetchData();
@@ -54,6 +83,17 @@ function Pagination() {
         <Loader />
       ) : (
         <div className="cars-wrapper">
+             <div className="input-wrapper">
+
+            <input
+            className="input"
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => searchModels(e.target.value)}
+              />
+              </div>
+            <div className="filter-buttons"></div>
           <div className="cars">
             {currentItems.map((model) => (
               <VehicleBrandCard key={model.id} model={model} />
@@ -62,14 +102,20 @@ function Pagination() {
           <div className="pagination-wrapper">
             <ul className="pagination">
               <li
-                className={currentPage === 1 ? "page-number disable" : "page-number"}
+                className={
+                  currentPage === 1 ? "page-number disable" : "page-number"
+                }
                 onClick={(e) => handleClick(e, currentPage - 1)}
               >
                 <AiOutlineLeft />
               </li>
               {renderPageNumbers()}
               <li
-                className={currentPage === totalPages ? "page-number disable" : "page-number"}
+                className={
+                  currentPage === totalPages
+                    ? "page-number disable"
+                    : "page-number"
+                }
                 onClick={(e) => handleClick(e, currentPage + 1)}
               >
                 <AiOutlineRight />
