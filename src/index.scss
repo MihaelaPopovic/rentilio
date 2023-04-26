@@ -94,11 +94,6 @@ p {
     width: 80%;
   }
 }
-.ant-btn:hover, .ant-btn-primary:hover{
-  color: inherit !important;
-  background-color: inherit !important;
-  border-color: inherit !important;
-}
 .ant-btn:active{
   background-color: var(--accent-color) !important;
 
@@ -108,12 +103,12 @@ p {
   background-color: var(--background-color) !important;
   border-color: var(--accent-color);
 }
-.ant-btn {
+.ant-btn, .ant-btn:hover, .ant-btn-primary:hover{
   display: flex;
   align-items: center;
 
   font-family:var(--font-family) ;
-  background-color: var(--accent-color);
+  background-color: var(--accent-color) !important;
   .icon {
     margin-right: 5px;
   }

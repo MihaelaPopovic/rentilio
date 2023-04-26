@@ -1,4 +1,15 @@
 .cars-wrapper {
+    .sort {
+        height: 45px;
+        float: right;
+    }
+    .cars {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 50px;
+    }
     .pagination-wrapper {
         display: flex;
         justify-content: center;
