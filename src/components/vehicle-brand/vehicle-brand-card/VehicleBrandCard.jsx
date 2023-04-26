@@ -3,22 +3,23 @@ import "./VehicleBrandCard.scss";
 function VehicleBrandCard({ model }) {
   return (
     <div className="car-wrapper">
-      <h4>{model.name}</h4>
+      <h4 className="sub">{model.name}</h4>
       <img
         draggable="false"
         className="car-picture"
         src={model.picture}
         alt={model.abrv}
       />
+      <h5>€{model.price}/day</h5>
       <div className="details">
         <div className="detail">
           <img
             draggable="false"
             className="icon"
-            src="./car-seat.png"
+            src="./car-chair.png"
             alt="Seat"
           />
-          <p>{model.seats}</p>
+          <p className="small-font">{model.seats}</p>
         </div>
         <div className="detail">
           <img
@@ -27,7 +28,7 @@ function VehicleBrandCard({ model }) {
             src="./gas-station.png"
             alt="Gas station"
           />
-          <p>{model.fuelConsumption} L/100km</p>
+          <p className="small-font">{model.fuelConsumption} L/100km</p>
         </div>
         <div className="detail">
           <img
@@ -36,7 +37,7 @@ function VehicleBrandCard({ model }) {
             src="./gearshift.png"
             alt="Gear shift"
           />
-          <p>{model.gearShift}</p>
+          <p className="small-font">{model.gearShift}</p>
         </div>
       </div>
     </div>

@@ -1,22 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import "./Homepage.scss";
-import { VehicleBrandContext } from "../../contexts/VehicleBrandContext";
-import Loader from "../../components/loader/Loader";
-import VehicleBrandCard from "../../components/vehicle-brand/vehicle-brand-card/VehicleBrandCard";
+import Pagination from "../../components/vehicle-model/pagination/Pagination";
 function Homepage() {
-  const { getVehicleBrands, isLoading } = useContext(VehicleBrandContext);
-  const [models, setModels] = useState();
-
-  const fetchData = async () => {
-    const loadedModels = await getVehicleBrands(true);
-    console.log(loadedModels);
-    setModels(loadedModels);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [getVehicleBrands]);
-
   return (
     <>
       <section className="wrapper background">
@@ -95,22 +80,13 @@ function Homepage() {
           </div>
         </div>
       </section>
-      {isLoading ? (
-        <Loader />
-      ) : (
+    
         <section className="wrapper background" id="cars">
           <div className="width-wrapper column">
             <h2>Book your suitable car</h2>
-            <div className="cars">
-
-            {models.map((model) => (
-              <VehicleBrandCard key={model.id} model={model}/>
-          
-            ))}
-            </div>
+              <Pagination />
           </div>
         </section>
-      )}
 
       <section className="wrapper">
         <div className="width-wrapper column">
