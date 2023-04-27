@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import VehicleBrandCard from "../../vehicle-brand/vehicle-brand-card/VehicleBrandCard";
+import VehicleBrandCard from "../../vehicle-brand/card/VehicleBrandCard";
 import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
 import Loader from "../../loader/Loader";
 import "./Pagination.scss";
