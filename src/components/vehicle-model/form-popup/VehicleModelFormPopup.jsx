@@ -9,6 +9,7 @@ function VehicleModelFormPopup({
   isEditing,
   brand,
   model,
+  onSave
 }) {
   const VehicleModel = useContext(VehicleModelContext);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -23,6 +24,8 @@ function VehicleModelFormPopup({
     } else {
       await VehicleModel.storeVehicleModel(brand.id);
     }
+    await onSave();
+
     setIsModalOpen(false);
     setConfirmLoading(false);
   };

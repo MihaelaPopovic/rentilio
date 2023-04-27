@@ -3,7 +3,7 @@ import { FiEdit2 } from "react-icons/fi";
 
 import VehicleModelFormPopup from "../form-popup/VehicleModelFormPopup";
 
-function VehicleModelFormEdit({ model, brand}) {
+function VehicleModelFormEdit({ model, brand, onModelSave}) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
@@ -22,6 +22,7 @@ function VehicleModelFormEdit({ model, brand}) {
           isEditing={true}
           brand={brand}
           model={model}
+          onSave={onModelSave}
         />
       )}
     </>

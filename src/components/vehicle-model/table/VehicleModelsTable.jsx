@@ -3,7 +3,8 @@ import { Table, Space } from "antd";
 import VehicleModelDelete from "../delete/VehicleModelDelete";
 import VehicleModelFormEdit from "../form-edit/VehicleModelFormEdit";
 
-function VehicleModelsTable({ models, brand }) {
+function VehicleModelsTable({ models, brand, onModelSave }) {
+
   const dataSource = models.map((model) => {
     return {
       key: model.id,
@@ -53,8 +54,8 @@ function VehicleModelsTable({ models, brand }) {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <VehicleModelFormEdit model={record} brand={brand}/>
-          <VehicleModelDelete model={record} />
+          <VehicleModelFormEdit model={record} brand={brand} onModelSave={onModelSave} />
+          <VehicleModelDelete model={record} onModelSave={onModelSave}/>
         </Space>
       ),
     },

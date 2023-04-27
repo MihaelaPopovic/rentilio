@@ -8,7 +8,7 @@ function VehicleBrandFormPopup({
   setIsModalOpen,
   isEditing,
   brand,
-  onSave,
+  onSave
 }) {
   const VehicleBrand = useContext(VehicleBrandContext);
   const [confirmLoading, setConfirmLoading] = useState(false);

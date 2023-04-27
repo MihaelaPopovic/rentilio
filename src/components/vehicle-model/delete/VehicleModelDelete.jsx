@@ -3,12 +3,13 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { Modal } from "antd";
 import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
 
-function VehicleModelDelete({ model }) {
+function VehicleModelDelete({ model, onModelSave }) {
   const { confirm } = Modal;
   const { deleteVehicleModel } = useContext(VehicleModelContext);
 
   const handleDelete = async () => {
     await deleteVehicleModel(model.key);
+    await onModelSave();
   };
   const showConfirm = () => {
     confirm({

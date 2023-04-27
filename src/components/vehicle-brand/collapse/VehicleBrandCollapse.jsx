@@ -1,25 +1,46 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Collapse } from "antd";
 import VehicleBrandFormEdit from "../form-edit/VehicleBrandFormEdit";
 import VehicleBrandDelete from "../delete/VehicleBrandDelete";
 import VehicleModelsTable from "../../vehicle-model/table/VehicleModelsTable";
 import VehicleModelFormCreate from "../../vehicle-model/form-create/VehicleModelFormCreate";
-
+import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
+import Loader from "../../loader/Loader";
 function VehicleBrandCollapse({ brand, onSave }) {
+  const { getVehicleModels } = useContext(VehicleModelContext);
   const { Panel } = Collapse;
-
+  const [isLoading, setIsLoading] = useState(false);
+  const fetchModels = async () => {
+    setIsLoading(true);
+    const loadedModels = await getVehicleModels(brand.id);
+    brand.models = loadedModels;
+    setIsLoading(false);
+  };
+  const onModelSave = async () => {
+    await fetchModels();
+  };
   const genExtra = () => (
     <>
       <VehicleBrandFormEdit brand={brand} onSave={onSave} />
       <VehicleBrandDelete brand={brand} onSave={onSave} />
     </>
   );
-  
+
   return (
     <Collapse>
       <Panel header={brand.name} extra={genExtra()}>
-        <VehicleModelFormCreate brand={brand} />
-        <VehicleModelsTable models={brand.models} brand={brand}/>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <VehicleModelFormCreate brand={brand} onModelSave={onModelSave} />
+            <VehicleModelsTable
+              models={brand.models}
+              brand={brand}
+              onModelSave={onModelSave}
+            />
+          </>
+        )}
       </Panel>
     </Collapse>
   );

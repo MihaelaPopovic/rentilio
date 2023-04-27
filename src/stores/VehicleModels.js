@@ -1,6 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import {
+  makeAutoObservable
+} from "mobx";
 import axios from "axios";
-import { message } from "antd";
+import {
+  message
+} from "antd";
 export default class VehicleModels {
   messageApi = message;
   name;
@@ -42,12 +46,91 @@ export default class VehicleModels {
   resetValues() {
     this.name = '';
     this.picture = '';
-    this.price = 0;
-    this.seats = 0;
+    this.price = '';
+    this.seats = '';
     this.abrv = '';
     this.gearShift = '';
-    this.fuelConsumption = 0;
+    this.fuelConsumption = '';
 
+  }
+  getVehicleModels = async (brandId) => {
+    try {
+      this.setIsLoading(true);
+      const runQuery = {
+        structuredQuery: {
+          from: [{
+            collectionId: "vehicle_models",
+          }, ],
+          where: {
+            fieldFilter: {
+              field: {
+                fieldPath: "vehicle_brand_id",
+              },
+              op: "EQUAL",
+              value: {
+                stringValue: brandId,
+              },
+            },
+          },
+          select: {
+            fields: [{
+                fieldPath: "id",
+              },
+              {
+                fieldPath: "name",
+              },
+              {
+                fieldPath: "abrv",
+              },
+              {
+                fieldPath: "seats",
+              },
+              {
+                fieldPath: "gearShift",
+              },
+              {
+                fieldPath: "fuelConsumption",
+              },
+              {
+                fieldPath: "picture",
+              },
+              {
+                fieldPath: "price",
+              },
+            ],
+          },
+        },
+      };
+      const modelResponse = await axios.post(
+        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents:runQuery",
+        runQuery
+      );
+      if (modelResponse.data[0].document) {
+        const models = modelResponse.data.map((data) => {
+          return {
+            id: data.document.name.split("/").pop(),
+            name: data.document.fields.name.stringValue,
+            abrv: data.document.fields.abrv.stringValue,
+            seats: data.document.fields.seats.integerValue,
+            fuelConsumption: data.document.fields.fuelConsumption.doubleValue,
+            gearShift: data.document.fields.gearShift.stringValue,
+            picture: data.document.fields.picture.stringValue,
+            price: data.document.fields.price.doubleValue,
+          };
+        });
+        this.setIsLoading(false);
+        return models; 
+      } else {
+        this.setIsLoading(false);
+        return [];
+      }
+    } catch (error) {
+      this.setIsLoading(false);
+      this.messageApi.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
+    }
   }
   storeVehicleModel = async (brandId) => {
     try {
@@ -136,7 +219,7 @@ export default class VehicleModels {
       };
       await axios.patch(
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/" +
-          model.key,
+        model.key,
         data
       );
       this.resetValues();
@@ -160,7 +243,7 @@ export default class VehicleModels {
       });
       await axios.delete(
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/" +
-          modelId
+        modelId
       );
       this.messageApi.open({
         type: "success",
@@ -183,9 +266,8 @@ export default class VehicleModels {
       formData.append("file", file);
       const response = await axios.post(
         "https://firebasestorage.googleapis.com/v0/b/rentilio-be577.appspot.com/o?uploadType=media&name=" +
-          encodeURIComponent(file.name),
-        formData,
-        {
+        encodeURIComponent(file.name),
+        formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -197,9 +279,9 @@ export default class VehicleModels {
       });
       this.setPicture(
         "https://firebasestorage.googleapis.com/v0/b/rentilio-be577.appspot.com/o/" +
-          response.data.name +
-          "?alt=media&token=" +
-          response.data.downloadTokens
+        response.data.name +
+        "?alt=media&token=" +
+        response.data.downloadTokens
       );
     } catch (error) {
       this.messageApi.open({

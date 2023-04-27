@@ -3,7 +3,7 @@ import { GrAdd } from "react-icons/gr";
 import { Button } from "antd";
 import VehicleModelFormPopup from "../form-popup/VehicleModelFormPopup";
 
-function VehicleModelFormCreate({ brand }) {
+function VehicleModelFormCreate({ brand, onModelSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -20,6 +20,7 @@ function VehicleModelFormCreate({ brand }) {
           setIsModalOpen={setIsModalOpen}
           isEditing={false}
           brand={brand}
+          onSave={onModelSave}
         />
       )}
     </div>
