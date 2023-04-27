@@ -19,7 +19,7 @@ function VehicleBrandCollapse({ brand, onSave }) {
     <Collapse>
       <Panel header={brand.name} extra={genExtra()}>
         <VehicleModelFormCreate brand={brand} />
-        <VehicleModelsTable models={brand.models} />
+        <VehicleModelsTable models={brand.models} brand={brand}/>
       </Panel>
     </Collapse>
   );

@@ -19,7 +19,7 @@ function VehicleBrandFormPopup({
     e.preventDefault();
     setConfirmLoading(true);
     if (isEditing) {
-      await VehicleBrand.editVehicleBrand(brand.id);
+      await VehicleBrand.editVehicleBrand(brand);
     } else {
       await VehicleBrand.storeVehicleBrand();
     }

@@ -39,7 +39,16 @@ export default class VehicleModels {
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
   }
-  
+  resetValues() {
+    this.name = '';
+    this.picture = '';
+    this.price = 0;
+    this.seats = 0;
+    this.abrv = '';
+    this.gearShift = '';
+    this.fuelConsumption = 0;
+
+  }
   storeVehicleModel = async (brandId) => {
     try {
       this.messageApi.open({
@@ -78,6 +87,8 @@ export default class VehicleModels {
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models",
         data
       );
+      this.resetValues();
+
       this.messageApi.open({
         type: "success",
         content: "Model saved!",
@@ -89,7 +100,7 @@ export default class VehicleModels {
       });
     }
   };
-  editVehicleModel = async (modelId) => {
+  editVehicleModel = async (model, brandId) => {
     try {
       this.messageApi.open({
         type: "info",
@@ -98,18 +109,38 @@ export default class VehicleModels {
       const data = {
         fields: {
           name: {
-            stringValue: this.name,
+            stringValue: this.name ? this.name : model.name,
           },
           abrv: {
-            stringValue: this.abrv,
+            stringValue: this.abrv ? this.abrv : model.abrv,
+          },
+          seats: {
+            integerValue: this.seats ? parseInt(this.seats) : parseInt(model.seats),
+          },
+          fuelConsumption: {
+            doubleValue: this.fuelConsumption ? this.fuelConsumption : model.fuelConsumption,
+          },
+          gearShift: {
+            stringValue: this.gearShift ? this.gearShift : model.gearShift,
+          },
+          picture: {
+            stringValue: this.picture ? this.picture : model.picture,
+          },
+          price: {
+            doubleValue: this.price ? this.price : model.price,
+          },
+          vehicle_brand_id: {
+            stringValue: brandId,
           },
         },
       };
       await axios.patch(
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/" +
-          modelId,
+          model.key,
         data
       );
+      this.resetValues();
+
       this.messageApi.open({
         type: "success",
         content: "Model updated!",

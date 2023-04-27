@@ -3,7 +3,7 @@ import { Table, Space } from "antd";
 import VehicleModelDelete from "../delete/VehicleModelDelete";
 import VehicleModelFormEdit from "../form-edit/VehicleModelFormEdit";
 
-function VehicleModelsTable({ models }) {
+function VehicleModelsTable({ models, brand }) {
   const dataSource = models.map((model) => {
     return {
       key: model.id,
@@ -13,6 +13,7 @@ function VehicleModelsTable({ models }) {
       price: model.price,
       gearShift: model.gearShift,
       fuelConsumption: model.fuelConsumption,
+      picture: model.picture
     };
   });
 
@@ -52,7 +53,7 @@ function VehicleModelsTable({ models }) {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <VehicleModelFormEdit model={record} />
+          <VehicleModelFormEdit model={record} brand={brand}/>
           <VehicleModelDelete model={record} />
         </Space>
       ),

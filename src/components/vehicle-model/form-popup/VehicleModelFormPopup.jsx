@@ -19,7 +19,7 @@ function VehicleModelFormPopup({
     e.preventDefault();
     setConfirmLoading(true);
     if (isEditing) {
-      await VehicleModel.editVehicleModel(model.id);
+      await VehicleModel.editVehicleModel(model, brand.id);
     } else {
       await VehicleModel.storeVehicleModel(brand.id);
     }
