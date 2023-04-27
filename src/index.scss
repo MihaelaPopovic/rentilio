@@ -94,6 +94,9 @@ p { font-size: var(--p-font-size) }
 
   input:focus-visible { outline: 0.5px solid var(--accent-color) }
 }
+.input-wrapper, .image-upload {
+  .invalid { border: 0.5px solid #cc0000}
+}
 
 .wrapper {
   display: flex;

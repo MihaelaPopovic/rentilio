@@ -21,24 +21,38 @@ export default class VehicleModels {
   }
   setName(name) {
     this.name = name;
+    const input = document.querySelector(".name");
+    input.classList.remove("invalid");
   }
   setPicture(picture) {
     this.picture = picture;
+    const input = document.querySelector(".picture");
+    input.classList.remove("invalid");
   }
   setPrice(price) {
     this.price = price;
+    const input = document.querySelector(".price");
+    input.classList.remove("invalid");
   }
   setSeats(seats) {
     this.seats = seats;
+    const input = document.querySelector(".seats");
+    input.classList.remove("invalid");
   }
   setAbrv(abrv) {
     this.abrv = abrv;
+    const input = document.querySelector(".abrv");
+    input.classList.remove("invalid");
   }
   setGearShift(gearShift) {
     this.gearShift = gearShift;
+    const input = document.querySelector(".gear-shift");
+    input.classList.remove("invalid");
   }
   setFuelConsumption(fuelConsumption) {
     this.fuelConsumption = fuelConsumption;
+    const input = document.querySelector(".fuel-consumption");
+    input.classList.remove("invalid");
   }
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
@@ -192,25 +206,25 @@ export default class VehicleModels {
       const data = {
         fields: {
           name: {
-            stringValue: this.name ? this.name : model.name,
+            stringValue: this.name,
           },
           abrv: {
-            stringValue: this.abrv ? this.abrv : model.abrv,
+            stringValue: this.abrv,
           },
           seats: {
-            integerValue: this.seats ? parseInt(this.seats) : parseInt(model.seats),
+            integerValue: this.seats,
           },
           fuelConsumption: {
-            doubleValue: this.fuelConsumption ? this.fuelConsumption : model.fuelConsumption,
+            doubleValue: this.fuelConsumption,
           },
           gearShift: {
-            stringValue: this.gearShift ? this.gearShift : model.gearShift,
+            stringValue: this.gearShift,
           },
           picture: {
-            stringValue: this.picture ? this.picture : model.picture,
+            stringValue: this.picture,
           },
           price: {
-            doubleValue: this.price ? this.price : model.price,
+            doubleValue: this.price,
           },
           vehicle_brand_id: {
             stringValue: brandId,

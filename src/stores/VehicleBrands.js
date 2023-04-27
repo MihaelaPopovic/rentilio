@@ -16,9 +16,13 @@ export default class VehicleBrands {
   }
   setName(name) {
     this.name = name;
+    const input = document.querySelector(".name");
+    input.classList.remove("invalid");
   }
   setAbrv(abrv) {
     this.abrv = abrv;
+    const input = document.querySelector(".abrv");
+    input.classList.remove("invalid");
   }
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
@@ -167,10 +171,10 @@ export default class VehicleBrands {
       const data = {
         fields: {
           name: {
-            stringValue: this.name ? this.name : brand.name,
+            stringValue: this.name,
           },
           abrv: {
-            stringValue: this.abrv ? this.abrv : brand.abrv,
+            stringValue: this.abrv,
           },
         },
       };

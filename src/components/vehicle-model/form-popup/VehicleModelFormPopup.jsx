@@ -9,25 +9,75 @@ function VehicleModelFormPopup({
   isEditing,
   brand,
   model,
-  onSave
+  onSave,
 }) {
   const VehicleModel = useContext(VehicleModelContext);
+  if(isEditing) {
+    VehicleModel.name = model.name;
+    VehicleModel.abrv = model.abrv;
+    VehicleModel.price = model.price;
+    VehicleModel.seats = model.seats;
+    VehicleModel.fuelConsumption = model.fuelConsumption;
+    VehicleModel.gearShift = model.gearShift;
+    VehicleModel.picture = model.picture;
+  }
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleCancel = () => {
+    VehicleModel.resetValues();
     setIsModalOpen(false);
+  };
+  const validateForm = () => {
+    let isValid = true;
+      if (!VehicleModel.name) {
+        isValid = false;
+        const input = document.querySelector(".name");
+        input.classList.add("invalid");
+      }
+      if (!VehicleModel.abrv) {
+        isValid = false;
+        const input = document.querySelector(".abrv");
+        input.classList.add("invalid");
+      }
+      if (!VehicleModel.price) {
+        isValid = false;
+        const input = document.querySelector(".price");
+        input.classList.add("invalid");
+      }
+      if (!VehicleModel.seats) {
+        isValid = false;
+        const input = document.querySelector(".seats");
+        input.classList.add("invalid");
+      }
+      if (!VehicleModel.fuelConsumption) {
+        isValid = false;
+        const input = document.querySelector(".fuel-consumption");
+        input.classList.add("invalid");
+      }
+      if (!VehicleModel.gearShift) {
+        isValid = false;
+        const input = document.querySelector(".gear-shift");
+        input.classList.add("invalid");
+      }
+      if (!VehicleModel.picture) {
+        isValid = false;
+        const input = document.querySelector(".picture");
+        input.classList.add("invalid");
+      }
+    return isValid;
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setConfirmLoading(true);
-    if (isEditing) {
-      await VehicleModel.editVehicleModel(model, brand.id);
-    } else {
-      await VehicleModel.storeVehicleModel(brand.id);
+    if (validateForm()) {
+      setConfirmLoading(true);
+      if (isEditing) {
+        await VehicleModel.editVehicleModel(model, brand.id);
+      } else {
+        await VehicleModel.storeVehicleModel(brand.id);
+      }
+      await onSave();
+      setIsModalOpen(false);
+      setConfirmLoading(false);
     }
-    await onSave();
-
-    setIsModalOpen(false);
-    setConfirmLoading(false);
   };
   const uploadImage = async (file) => {
     if (!file) {
@@ -55,6 +105,7 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Name *</label>
           <input
+            className="name"
             required
             type="string"
             defaultValue={isEditing ? model.name : VehicleModel.name}
@@ -64,6 +115,7 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Short name * </label>
           <input
+            className="abrv"
             required
             type="string"
             defaultValue={isEditing ? model.abrv : VehicleModel.abrv}
@@ -73,6 +125,7 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Price * </label>
           <input
+            className="price"
             required
             type="number"
             defaultValue={isEditing ? model.price : VehicleModel.price}
@@ -82,6 +135,7 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Seats * </label>
           <input
+            className="seats"
             required
             type="number"
             defaultValue={isEditing ? model.seats : VehicleModel.seats}
@@ -91,6 +145,7 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Fuel consumption * </label>
           <input
+            className="fuel-consumption"
             required
             type="number"
             defaultValue={
@@ -102,6 +157,7 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Gear shift * </label>
           <input
+            className="gear-shift"
             required
             type="string"
             defaultValue={isEditing ? model.gearShift : VehicleModel.gearShift}
@@ -109,7 +165,7 @@ function VehicleModelFormPopup({
           />
         </div>
         <div className="image-upload">
-          <input type="file" onChange={handleFileChange} />
+          <input className="picture" type="file" onChange={handleFileChange} />
         </div>
       </form>
     </Modal>
