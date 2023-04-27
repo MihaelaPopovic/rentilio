@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { GrAdd } from "react-icons/gr";
 import { Button } from "antd";
-import VehicleModelFormPopup from "../vehicle-model-form-popup/VehicleModelFormPopup";
+import "./VehicleBrandFormCreate.scss";
+import VehicleBrandFormPopup from "../form-popup/VehicleBrandFormPopup";
 
-function VehicleModelFormCreate({ brand }) {
+function VehicleBrandFormButton({ onSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
-  
   return (
     <div className="btn-wrapper">
       <Button type="default" onClick={showModal}>
-        <GrAdd className="icon" /> Model{" "}
-      </Button>{" "}
+        <GrAdd className="icon" /> Brand
+      </Button>
       {isModalOpen && (
-        <VehicleModelFormPopup
+        <VehicleBrandFormPopup
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           isEditing={false}
-          brand={brand}
+          onSave={onSave}
         />
-      )}{" "}
+      )}
     </div>
   );
 }
 
-export default VehicleModelFormCreate;
+export default VehicleBrandFormButton;

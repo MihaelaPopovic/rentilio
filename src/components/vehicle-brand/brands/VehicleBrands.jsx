@@ -1,5 +1,5 @@
 import React from "react";
-import VehicleBrandCollapse from "../vehicle-brand-collapse/VehicleBrandCollapse";
+import VehicleBrandCollapse from "../collapse/VehicleBrandCollapse";
 
 function VehicleBrands({ brands, onSave }) {
   return (

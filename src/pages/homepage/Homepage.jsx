@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useRef }  from "react";
 import "./Homepage.scss";
 import Pagination from "../../components/vehicle-model/pagination/Pagination";
 function Homepage() {
+  const cars = useRef(null);
+
+  const scrollToCars = () => {
+    cars.current.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <>
       <section className="wrapper background">
         <div className="width-wrapper row">
           <div className="side">
             <h1 className="title">Easy and fast way to rent your car</h1>
-            <p>
+            <p className="header-text">
               At our rent a car service, we pride ourselves on providing
               excellent customer service and high-quality vehicles. We know that
               renting a car can be stressful, which is why we aim to make the
               process as easy and straightforward as possible.
             </p>
-            <button type="button" className="cta">
+            <button type="button" className="cta" onClick={scrollToCars}>
               Rent a car
             </button>
           </div>
@@ -81,7 +86,7 @@ function Homepage() {
         </div>
       </section>
     
-        <section className="wrapper background" id="cars">
+        <section className="wrapper background" id="cars" ref={cars}>
           <div className="width-wrapper column">
             <h2>Book your suitable car</h2>
               <Pagination />

@@ -1,7 +1,6 @@
 .wrapper {
 
     .column {
-        flex-direction: column;
         align-items: center;
         .image-wrapper {
             display: flex;
@@ -9,9 +8,7 @@
 
             width: 80%;
 
-            .picture {
-                width: 30%;
-            }
+            .picture { width: 30% }
         }
         .text-wrapper {
             display: flex;
@@ -19,9 +16,7 @@
             align-items: center;
 
             margin-top: 30px;
-            .btn {
-                margin-top: 30px;
-            }
+            .btn {  margin-top: 30px }
         }
     }
 }

@@ -3,6 +3,7 @@ import { GuardProvider, GuardedRoute } from "react-router-guards";
 import { AdminContext } from "./contexts/AdminContext";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navigation from "./layouts/Navigation";
+import Footer from "./layouts/Footer";
 import AdminDashboard from "./pages/admin-dashboard/AdminDashboard";
 import AdminLogin from "./pages/admin-login/AdminLogin";
 import NotFound from "./pages/not-found/NotFound";
@@ -45,6 +46,7 @@ function App() {
             </Route>
           </Switch>
         </GuardProvider>
+        <Footer />
       </Router>
     </div>
   );

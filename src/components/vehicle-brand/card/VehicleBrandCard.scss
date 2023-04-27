@@ -8,13 +8,9 @@
     background-color: var(--background-color);
     border-radius: 10px;
 
-    .sub {
-        text-align: center;
-    }
+    .sub { text-align: center }
 
-    .car-picture {
-        width: 100%;
-    }
+    .car-picture { width: 100% }
 
     .details {
         display: flex;
@@ -41,4 +37,7 @@
             }
         }
     }
+}
+@media (max-width: 800px) {
+    .car-wrapper { width: 100% !important }
 }

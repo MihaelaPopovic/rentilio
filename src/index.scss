@@ -15,9 +15,7 @@ body {
   overflow-x: hidden;
 }
 
-html {
-  box-sizing: border-box;
-}
+html { box-sizing: border-box }
 
 *,
 *::before,
@@ -60,12 +58,27 @@ h4 {
   font-size: 25px;
   font-weight: 500;
 }
+
 h5 {
   font-size: 20px;
   font-weight: 500;
 }
-p {
-  font-size: var(--p-font-size);
+
+p { font-size: var(--p-font-size) }
+
+@media (max-width: 800px) {
+  h1 { font-size: 50px }
+
+  h2 { font-size: 35px }
+
+  h3 { font-size: 28px }
+
+  h4 { font-size: 20px }
+
+  h5 { font-size: 15px }
+
+  .width-wrapper { width: 95% !important }
+
 }
 
 .input-wrapper {
@@ -79,44 +92,53 @@ p {
     border-radius: 10px;
   }
 
-  input:focus-visible {
-    outline: 0.5px solid var(--accent-color);
-  }
+  input:focus-visible { outline: 0.5px solid var(--accent-color) }
 }
+
 .wrapper {
   display: flex;
   justify-content: center;
 
   width: 100%;
+
   .width-wrapper {
     display: flex;
-
     width: 80%;
   }
-}
-.ant-btn:active{
-  background-color: var(--accent-color) !important;
 
+  .column { flex-direction: column }
+
+  .row { flex-direction: row }
 }
-.ant-btn-default {
-  color: var(--accent-color);
-  background-color: var(--background-color) !important;
-  border-color: var(--accent-color);
+
+.ant-btn-default,
+.ant-btn-default:hover,
+.ant-btn-default:active {
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
 }
-.ant-btn, .ant-btn:hover, .ant-btn-primary:hover{
+
+.ant-btn-primary,
+.ant-btn-primary:hover {
+  background-color: var(--accent-color) !important;
+}
+
+.ant-btn,
+.ant-btn:hover {
   display: flex;
   align-items: center;
 
-  font-family:var(--font-family) ;
-  background-color: var(--accent-color) !important;
-  .icon {
-    margin-right: 5px;
-  }
+  font-family: var(--font-family);
+
+  .icon { margin-right: 5px }
 }
-.ant-modal-footer, .ant-modal-confirm-btns {
+
+.ant-modal-footer,
+.ant-modal-confirm-btns {
   display: flex;
   justify-content: flex-end;
 }
+
 .font-size {
   margin-inline: 10px;
   font-size: 20px;

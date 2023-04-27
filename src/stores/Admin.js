@@ -1,6 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import {
+  makeAutoObservable
+} from "mobx";
 import axios from "axios";
-import { message } from "antd";
+import {
+  message
+} from "antd";
 
 export default class Admin {
   messageApi = message;
@@ -27,6 +31,15 @@ export default class Admin {
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
   }
+  removeFromStorage() {
+    localStorage.removeItem("admin");
+  }
+  getToken() {
+    if (localStorage.getItem("admin")) {
+      return localStorage.getItem("admin");
+    }
+    return null;
+  }
   getIsLoggedIn() {
     if (localStorage.getItem("admin")) {
       return true;
@@ -34,7 +47,10 @@ export default class Admin {
     return false;
   }
   setLoggedIn(user) {
-    localStorage.setItem("admin", user.refreshToken);
+    const body = {
+      'idToken': user.idToken
+    }
+    localStorage.setItem("admin", JSON.stringify(body));
   }
   signIn = async (history) => {
     try {
@@ -70,6 +86,16 @@ export default class Admin {
       this.setIsLoading(false);
     }
   };
+/*   validateToken = async () => {
+    try {
+      const body = JSON.parse(this.getToken());
+       await axios.post(
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyB769VRkyrO5hOXklG8Sc0mQUKDYU4YQus", body
+      );
+    } catch (error) {
+      return error.response;
+    }
+  }; */
 }
 /* import axios from "axios";
 import { message } from "antd";

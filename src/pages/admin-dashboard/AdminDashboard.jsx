@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./AdminDashboard.scss";
 import { VehicleBrandContext } from "../../contexts/VehicleBrandContext";
-import VehicleBrands from "../../components/vehicle-brand/vehicle-brands/VehicleBrands";
-import VehicleBrandFormCreate from "../../components/vehicle-brand/vehicle-brand-form-create/VehicleBrandFormCreate";
+import VehicleBrands from "../../components/vehicle-brand/brands/VehicleBrands";
+import VehicleBrandFormCreate from "../../components/vehicle-brand/form-create/VehicleBrandFormCreate";
 import Loader from "../../components/loader/Loader";
 
 function AdminDashboard() {
@@ -23,7 +23,7 @@ function AdminDashboard() {
 
   return (
     <div className="wrapper">
-      <div className="width-wrapper">
+      <div className="width-wrapper column">
         <h2>Vehicles</h2>
         {isLoading ? (
           <Loader />

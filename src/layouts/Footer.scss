@@ -1,0 +1,8 @@
+.footer {
+    padding: 30px 0px;
+    background-color: var(--accent-color);
+    .footer-wrapper {
+        justify-content: center;
+        .copyright-text { color: var(--background-color) }
+    }
+  }
