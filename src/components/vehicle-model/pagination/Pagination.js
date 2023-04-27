@@ -29,23 +29,27 @@ function Pagination() {
   const searchModels = (search) => {
     setSearchQuery(search);
     if (search) {
-      const filteredItems = models.filter((item) => {
-        return (
-          item.name.toLowerCase().includes(search.toLowerCase()) ||
-          item.abrv.toLowerCase().includes(search.toLowerCase()) ||
-          item.fuelConsumption.toString().includes(search) ||
-          item.gearShift.toLowerCase().includes(search.toLowerCase()) ||
-          item.price.toString().includes(search.toLowerCase()) ||
-          item.seats.includes(search.toLowerCase()) ||
-          item.brand.name.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-      setFilteredModels(filteredItems);
+      filterModels(search.toLowerCase());
+     
     } else {
       setFilteredModels([]);
     }
     setCurrentPage(1);
   };
+  const filterModels = (search) => {
+    const filteredItems = models.filter((item) => {
+      return (
+        item.name.toLowerCase().includes(search) ||
+        item.abrv.toLowerCase().includes(search) ||
+        item.fuelConsumption.toString().includes(search) ||
+        item.gearShift.toLowerCase().includes(search) ||
+        item.price.toString().includes(search) ||
+        item.seats.includes(search) ||
+        item.brand.name.toLowerCase().includes(search)
+      );
+    });
+    setFilteredModels(filteredItems);
+  }
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -62,8 +66,7 @@ function Pagination() {
     : models
     ? Math.ceil(models.length / itemsPerPage)
     : 0;
-  const pageChanged = (e, pageNumber) => {
-    e.preventDefault();
+  const pageChanged = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
   const renderPageNumbers = () => {
@@ -72,7 +75,7 @@ function Pagination() {
       pageNumbers.push(
         <li
           key={i}
-          onClick={(e) => pageChanged(e, i)}
+          onClick={(e) => pageChanged(i)}
           className={i === currentPage ? "page-number active" : "page-number"}
         >
           {i}
@@ -109,21 +112,37 @@ function Pagination() {
   const onClick = ({ key }) => {
     switch (key) {
       case "priceAscending":
-        return setFilteredModels([...models].sort((a, b) => a.price - b.price));
+        sortModelsByPriceAscending();
+        break;
       case "priceDescending":
-        return setFilteredModels([...models].sort((a, b) => b.price - a.price));
+        sortModelsByPriceDescending();
+        break;
       case "nameAscending":
-        return setFilteredModels(
-          [...models].sort((a, b) => a.name.localeCompare(b.name))
-        );
+        sortModelsByNameAscending();
+        break;
       case "nameDescending":
-        return setFilteredModels(
-          [...models].sort((a, b) => b.name.localeCompare(a.name))
-        );
+        sortModelsByNameDescending();
+        break;
       default:
         setFilteredModels(filteredModels);
     }
   };
+  const sortModelsByPriceAscending = () => {
+    setFilteredModels([...models].sort((a, b) => a.price - b.price));
+  };
+
+  const sortModelsByPriceDescending = () => {
+    setFilteredModels([...models].sort((a, b) => b.price - a.price));
+  };
+
+  const sortModelsByNameAscending = () => {
+    setFilteredModels([...models].sort((a, b) => a.name.localeCompare(b.name)));
+  };
+
+  const sortModelsByNameDescending = () => {
+    setFilteredModels([...models].sort((a, b) => b.name.localeCompare(a.name)));
+  };
+
   return (
     <>
       {isLoading ? (
@@ -139,7 +158,14 @@ function Pagination() {
               onChange={(e) => searchModels(e.target.value)}
             />
           </div>
-          <Dropdown menu={{ items, onClick }} placement="bottom" arrow>
+          <Dropdown
+            menu={{
+              items,
+              onClick,
+            }}
+            placement="bottom"
+            arrow
+          >
             <Button type="primary" className="sort">
               Sort by
             </Button>
