@@ -23,6 +23,10 @@ export default class VehicleBrands {
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
   }
+  resetValues() {
+    this.name = '';
+    this.abrv = '';
+  }
   getVehicleBrands = async (returnModels) => {
     try {
       this.setIsLoading(true);
@@ -93,35 +97,19 @@ export default class VehicleBrands {
           runQuery
         );
         if (modelResponse.data[0].document) {
+          const models = modelResponse.data.map((data) => {
+            const { name, abrv, seats, fuelConsumption, gearShift, picture, price } = data.document.fields;
+            const id = data.document.name.split("/").pop();
+            const model = { id, name: name.stringValue, abrv: abrv.stringValue, seats: seats.integerValue, fuelConsumption: fuelConsumption.doubleValue, gearShift: gearShift.stringValue, picture: picture.stringValue, price: price.doubleValue };
+            if (returnModels) {
+              model.brand = brand;
+              return model;
+            } else {
+              brand.models.push(model);
+            }
+          });
           if (returnModels) {
-            const models = modelResponse.data.map((data) => {
-              return {
-                id: data.document.name.split("/").pop(),
-                name: data.document.fields.name.stringValue,
-                abrv: data.document.fields.abrv.stringValue,
-                seats: data.document.fields.seats.integerValue,
-                fuelConsumption: data.document.fields.fuelConsumption.doubleValue,
-                gearShift: data.document.fields.gearShift.stringValue,
-                picture: data.document.fields.picture.stringValue,
-                price: data.document.fields.price.doubleValue,
-                brand: brand
-              };
-            });
             formattedModels.push(models);
-          } else {
-            const models = modelResponse.data.map((data) => {
-              return {
-                id: data.document.name.split("/").pop(),
-                name: data.document.fields.name.stringValue,
-                abrv: data.document.fields.abrv.stringValue,
-                seats: data.document.fields.seats.integerValue,
-                fuelConsumption: data.document.fields.fuelConsumption.doubleValue,
-                gearShift: data.document.fields.gearShift.stringValue,
-                picture: data.document.fields.picture.stringValue,
-                price: data.document.fields.price.doubleValue,
-              };
-            });
-            brand.models = models;
           }
         }
       }
@@ -158,6 +146,7 @@ export default class VehicleBrands {
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands",
         data
       );
+      this.resetValues();
       this.messageApi.open({
         type: "success",
         content: "Brand saved!",
@@ -169,7 +158,7 @@ export default class VehicleBrands {
       });
     }
   };
-  editVehicleBrand = async (brandId) => {
+  editVehicleBrand = async (brand) => {
     try {
       this.messageApi.open({
         type: "info",
@@ -178,18 +167,19 @@ export default class VehicleBrands {
       const data = {
         fields: {
           name: {
-            stringValue: this.name,
+            stringValue: this.name ? this.name : brand.name,
           },
           abrv: {
-            stringValue: this.abrv,
+            stringValue: this.abrv ? this.abrv : brand.abrv,
           },
         },
       };
       await axios.patch(
         "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_brands/" +
-        brandId,
+        brand.id,
         data
       );
+      this.resetValues();
       this.messageApi.open({
         type: "success",
         content: "Brand updated!",
