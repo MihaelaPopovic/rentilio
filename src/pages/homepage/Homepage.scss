@@ -92,7 +92,7 @@
 
 @media (max-width: 800px) {
   .row {
-    flex-direction: column !important;
+    flex-direction: column-reverse !important;
     padding-block: 50px !important;
 
     .side {
