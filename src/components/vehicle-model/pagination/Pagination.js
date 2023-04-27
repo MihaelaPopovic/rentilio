@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import VehicleBrandCard from "../../vehicle-brand/card/VehicleBrandCard";
 import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
 import Loader from "../../loader/Loader";
@@ -12,16 +12,24 @@ import {
 import { Button, Dropdown } from "antd";
 
 function Pagination() {
-  const { getVehicleBrands, isLoading } = useContext(VehicleBrandContext);
+  const { getVehicleBrands } = useContext(VehicleBrandContext);
   const [models, setModels] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const cars = useRef(null);
 
+  const scrollToCars = () => {
+    cars.current.scrollIntoView({ behavior: "smooth" });
+  };
   useEffect(() => {
     fetchData();
   }, [getVehicleBrands]);
 
   const fetchData = async () => {
+    setIsLoading(true);
     const loadedModels = await getVehicleBrands(true);
     setModels(loadedModels);
+    setIsLoading(false);
+
   };
   //Filtering
   const [filteredModels, setFilteredModels] = useState([]);
@@ -67,7 +75,13 @@ function Pagination() {
     ? Math.ceil(models.length / itemsPerPage)
     : 0;
   const pageChanged = (pageNumber) => {
+    scrollToCars();
+    setIsLoading(true);
     setCurrentPage(pageNumber);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, "1000");
+
   };
   const renderPageNumbers = () => {
     const pageNumbers = [];
@@ -144,11 +158,11 @@ function Pagination() {
   };
 
   return (
-    <>
+    <div id="cars" ref={cars}>
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="cars-wrapper">
+        <div className="cars-wrapper" >
           <div className="input-wrapper">
             <input
               className="input"
@@ -181,7 +195,7 @@ function Pagination() {
                 className={
                   currentPage === 1 ? "page-number disable" : "page-number"
                 }
-                onClick={(e) => pageChanged(e, currentPage - 1)}
+                onClick={(e) => pageChanged(currentPage - 1)}
               >
                 <AiOutlineLeft />
               </li>
@@ -192,7 +206,7 @@ function Pagination() {
                     ? "page-number disable"
                     : "page-number"
                 }
-                onClick={(e) => pageChanged(e, currentPage + 1)}
+                onClick={(e) => pageChanged(currentPage + 1)}
               >
                 <AiOutlineRight />
               </li>
@@ -200,7 +214,7 @@ function Pagination() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
