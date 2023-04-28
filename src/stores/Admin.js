@@ -10,7 +10,6 @@ export default class Admin {
   messageApi = message;
   email;
   password;
-  error = null;
   isLoading = false;
   constructor() {
     makeAutoObservable(this);
@@ -18,14 +17,14 @@ export default class Admin {
 
   setEmail(email) {
     this.email = email;
+    const input = document.querySelector(".email");
+    input.classList.remove("invalid");
   }
 
   setPassword(password) {
     this.password = password;
-  }
-
-  setError(error) {
-    this.error = error;
+    const input = document.querySelector(".password");
+    input.classList.remove("invalid");
   }
 
   setIsLoading(isLoading) {

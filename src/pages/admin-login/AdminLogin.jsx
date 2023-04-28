@@ -11,11 +11,27 @@ function AdminLogin() {
     if (adminLogin.getIsLoggedIn()) {
       history.push("/dashboard");
     }
-  }, [adminLogin.getIsLoggedIn()]); 
+  }, [adminLogin.getIsLoggedIn()]);
+  const validateForm = () => {
+    let isValid = true;
+    if (!adminLogin.email) {
+      isValid = false;
+      const input = document.querySelector(".email");
+      input.classList.add("invalid");
+    }
+    if (!adminLogin.password) {
+      isValid = false;
+      const input = document.querySelector(".password");
+      input.classList.add("invalid");
+    }
 
+    return isValid;
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await adminLogin.signIn(history);
+    if (validateForm()) {
+      await adminLogin.signIn(history);
+    }
   };
 
   return (
@@ -23,8 +39,9 @@ function AdminLogin() {
       <form className="form">
         <h3> Admin Login </h3>
         <div className="input-wrapper">
-          <label> Email: </label>
+          <label> Email * </label>
           <input
+            className="email"
             required
             type="email"
             value={adminLogin.email}
@@ -32,8 +49,9 @@ function AdminLogin() {
           />
         </div>
         <div className="input-wrapper">
-          <label> Password: </label>
+          <label> Password * </label>
           <input
+            className="password"
             required
             type="password"
             value={adminLogin.password}
