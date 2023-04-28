@@ -1,6 +1,6 @@
 import React, { useRef }  from "react";
 import "./Homepage.scss";
-import Pagination from "../../components/vehicle-model/pagination/Pagination";
+import VehicleModelsList from "../../components/vehicle-model/list/VehicleModelsList";
 function Homepage() {
   const cars = useRef(null);
 
@@ -89,7 +89,7 @@ function Homepage() {
         <section className="wrapper background" id="cars" ref={cars}>
           <div className="width-wrapper column">
             <h2>Book your suitable car</h2>
-              <Pagination />
+              <VehicleModelsList />
           </div>
         </section>
 

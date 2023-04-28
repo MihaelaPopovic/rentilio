@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import VehicleBrandCard from "../../vehicle-brand/card/VehicleBrandCard";
 import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
 import Loader from "../../loader/Loader";
-import "./Pagination.scss";
+import "./VehicleModelsList.scss";
 import {
   AiOutlineLeft,
   AiOutlineRight,
@@ -11,7 +11,7 @@ import {
 } from "react-icons/ai";
 import { Button, Dropdown } from "antd";
 
-function Pagination() {
+function VehicleModelsList() {
   const { getVehicleBrands } = useContext(VehicleBrandContext);
   const [models, setModels] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -138,7 +138,7 @@ function Pagination() {
         sortModelsByNameDescending();
         break;
       default:
-        setFilteredModels(filteredModels);
+       return;
     }
   };
   const sortModelsByPriceAscending = () => {
@@ -218,4 +218,4 @@ function Pagination() {
   );
 }
 
-export default Pagination;
+export default VehicleModelsList;
