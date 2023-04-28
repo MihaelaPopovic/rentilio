@@ -11,7 +11,6 @@ import Homepage from "./pages/homepage/Homepage";
 
 function App() {
   const adminLogin = useContext(AdminContext);
-
   const requireLogin = (to, from, next) => {
     if (to.meta.auth) {
       if (adminLogin.getIsLoggedIn()) {
@@ -31,6 +30,8 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Homepage />
+        <Footer />
+
             </Route>
             <GuardedRoute
               path="/dashboard"
@@ -46,7 +47,7 @@ function App() {
             </Route>
           </Switch>
         </GuardProvider>
-        <Footer />
+
       </Router>
     </div>
   );
