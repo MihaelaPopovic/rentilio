@@ -30,27 +30,32 @@ export default class Admin {
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
   }
+
   removeFromStorage() {
     localStorage.removeItem("admin");
   }
+
   getToken() {
     if (localStorage.getItem("admin")) {
       return localStorage.getItem("admin");
     }
     return null;
   }
+
   getIsLoggedIn() {
     if (localStorage.getItem("admin")) {
       return true;
     }
     return false;
   }
+
   setLoggedIn(user) {
     const body = {
       'idToken': user.idToken
     }
     localStorage.setItem("admin", JSON.stringify(body));
   }
+  
   signIn = async (history) => {
     try {
       this.messageApi.open({

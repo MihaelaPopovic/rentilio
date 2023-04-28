@@ -5,13 +5,10 @@ import VehicleModelFormPopup from "../form-popup/VehicleModelFormPopup";
 
 function VehicleModelFormCreate({ brand, onModelSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
   
   return (
     <div className="btn-wrapper">
-      <Button type="default" onClick={showModal}>
+      <Button type="default" onClick={setIsModalOpen(true)}>
         <GrAdd className="icon" /> Model
       </Button>
       {isModalOpen && (

@@ -20,6 +20,7 @@ function VehicleModelsList() {
   const scrollToCars = () => {
     cars.current.scrollIntoView({ behavior: "smooth" });
   };
+
   useEffect(() => {
     fetchData();
   }, [getVehicleBrands]);
@@ -29,11 +30,12 @@ function VehicleModelsList() {
     const loadedModels = await getVehicleBrands(true);
     setModels(loadedModels);
     setIsLoading(false);
-
   };
+
   //Filtering
   const [filteredModels, setFilteredModels] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+
   const searchModels = (search) => {
     setSearchQuery(search);
     if (search) {
@@ -44,6 +46,7 @@ function VehicleModelsList() {
     }
     setCurrentPage(1);
   };
+
   const filterModels = (search) => {
     const filteredItems = models.filter((item) => {
       return (
@@ -58,6 +61,7 @@ function VehicleModelsList() {
     });
     setFilteredModels(filteredItems);
   }
+
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -74,6 +78,7 @@ function VehicleModelsList() {
     : models
     ? Math.ceil(models.length / itemsPerPage)
     : 0;
+
   const pageChanged = (pageNumber) => {
     scrollToCars();
     setIsLoading(true);
@@ -81,8 +86,8 @@ function VehicleModelsList() {
     setTimeout(() => {
       setIsLoading(false);
     }, "1000");
-
   };
+
   const renderPageNumbers = () => {
     const pageNumbers = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -141,6 +146,7 @@ function VehicleModelsList() {
        return;
     }
   };
+  
   const sortModelsByPriceAscending = () => {
     setFilteredModels([...models].sort((a, b) => a.price - b.price));
   };

@@ -7,11 +7,13 @@ import { AdminContext } from "../../contexts/AdminContext";
 function AdminLogin() {
   const adminLogin = useContext(AdminContext);
   const history = useHistory();
+
   useEffect(() => {
     if (adminLogin.getIsLoggedIn()) {
       history.push("/dashboard");
     }
   }, [adminLogin.getIsLoggedIn()]);
+
   const validateForm = () => {
     let isValid = true;
     if (!adminLogin.email) {
@@ -24,9 +26,9 @@ function AdminLogin() {
       const input = document.querySelector(".password");
       input.classList.add("invalid");
     }
-
     return isValid;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {

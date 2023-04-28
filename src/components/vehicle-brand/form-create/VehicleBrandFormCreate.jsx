@@ -6,9 +6,11 @@ import VehicleBrandFormPopup from "../form-popup/VehicleBrandFormPopup";
 
 function VehicleBrandFormButton({ onSave }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
+  
   return (
     <div className="btn-wrapper">
       <Button type="default" onClick={showModal}>

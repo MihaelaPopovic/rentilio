@@ -7,18 +7,22 @@ import VehicleModelFormCreate from "../../vehicle-model/form-create/VehicleModel
 import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
 import Loader from "../../loader/Loader";
 function VehicleBrandCollapse({ brand, onSave }) {
+
   const { getVehicleModels } = useContext(VehicleModelContext);
   const { Panel } = Collapse;
   const [isLoading, setIsLoading] = useState(false);
+
   const fetchModels = async () => {
     setIsLoading(true);
     const loadedModels = await getVehicleModels(brand.id);
     brand.models = loadedModels;
     setIsLoading(false);
   };
+
   const onModelSave = async () => {
     await fetchModels();
   };
+  
   const genExtra = () => (
     <>
       <VehicleBrandFormEdit brand={brand} onSave={onSave} />

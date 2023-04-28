@@ -60,6 +60,7 @@ function VehicleModelsTable({ models, brand, onModelSave }) {
       ),
     },
   ];
+  
   return (
     <>
       <Table dataSource={dataSource} columns={columns} />

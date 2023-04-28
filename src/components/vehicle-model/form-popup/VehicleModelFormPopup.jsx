@@ -11,7 +11,9 @@ function VehicleModelFormPopup({
   model,
   onSave,
 }) {
+
   const VehicleModel = useContext(VehicleModelContext);
+
   if(isEditing) {
     VehicleModel.name = model.name;
     VehicleModel.abrv = model.abrv;
@@ -21,11 +23,14 @@ function VehicleModelFormPopup({
     VehicleModel.gearShift = model.gearShift;
     VehicleModel.picture = model.picture;
   }
+
   const [confirmLoading, setConfirmLoading] = useState(false);
+
   const handleCancel = () => {
     VehicleModel.resetValues();
     setIsModalOpen(false);
   };
+
   const validateForm = () => {
     let isValid = true;
       if (!VehicleModel.name) {
@@ -65,6 +70,7 @@ function VehicleModelFormPopup({
       }
     return isValid;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -79,16 +85,19 @@ function VehicleModelFormPopup({
       setConfirmLoading(false);
     }
   };
+
   const uploadImage = async (file) => {
     if (!file) {
       alert("Please choose a file first!");
     }
     await VehicleModel.storeImage(file);
   };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     uploadImage(file);
   };
+  
   return (
     <Modal
       title={isEditing ? "Edit vehicle model" : "Add new vehicle model"}

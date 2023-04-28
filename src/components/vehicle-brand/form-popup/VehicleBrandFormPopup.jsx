@@ -11,15 +11,19 @@ function VehicleBrandFormPopup({
   onSave,
 }) {
   const VehicleBrand = useContext(VehicleBrandContext);
+
   if (isEditing) {
     VehicleBrand.name = brand.name;
     VehicleBrand.abrv = brand.abrv;
   }
+
   const [confirmLoading, setConfirmLoading] = useState(false);
+  
   const handleCancel = () => {
     VehicleBrand.resetValues();
     setIsModalOpen(false);
   };
+
   const validateForm = () => {
     let isValid = true;
     if (!VehicleBrand.name) {
@@ -32,9 +36,9 @@ function VehicleBrandFormPopup({
       const input = document.querySelector(".abrv");
       input.classList.add("invalid");
     }
-
     return isValid;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -49,6 +53,7 @@ function VehicleBrandFormPopup({
       setConfirmLoading(false);
     }
   };
+
   return (
     <Modal
       title={isEditing ? "Edit vehicle brand" : "Add new vehicle brand"}

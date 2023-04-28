@@ -11,6 +11,7 @@ function VehicleBrandDelete({ brand, onSave }) {
     await deleteVehicleBrand(brand.id);
     await onSave();
   };
+  
   const showConfirm = () => {
     confirm({
       title: "Do you want to delete these brand?",

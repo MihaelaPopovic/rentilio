@@ -13,6 +13,7 @@ function AdminDashboard() {
     const loadedBrands = await getVehicleBrands();
     setBrands(loadedBrands);
   };
+  
   const handleSave = async () => {
     await fetchData();
   };

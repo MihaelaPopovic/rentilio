@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NotFound.scss";
+import { Button } from "antd";
 
 function NotFound() {
   return (
@@ -19,9 +20,7 @@ function NotFound() {
           <p>The page you're looking for isn't found :(</p>
           <p>We suggest you back to home</p>
           <Link to="/">
-            <button aria-label="home" className="btn btn-outline">
-              Go to home
-            </button>
+            <Button type="primary" >Go to home</Button>
           </Link>
         </div>
       </div>

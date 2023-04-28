@@ -13,50 +13,59 @@ export default class VehicleModels {
   price;
   gearShift;
   fuelConsumption;
-
   picture;
   isLoading = false;
+
   constructor() {
     makeAutoObservable(this);
   }
+
   setName(name) {
     this.name = name;
     const input = document.querySelector(".name");
     input.classList.remove("invalid");
   }
+
   setPicture(picture) {
     this.picture = picture;
     const input = document.querySelector(".picture");
     input.classList.remove("invalid");
   }
+
   setPrice(price) {
     this.price = price;
     const input = document.querySelector(".price");
     input.classList.remove("invalid");
   }
+
   setSeats(seats) {
     this.seats = seats;
     const input = document.querySelector(".seats");
     input.classList.remove("invalid");
   }
+
   setAbrv(abrv) {
     this.abrv = abrv;
     const input = document.querySelector(".abrv");
     input.classList.remove("invalid");
   }
+
   setGearShift(gearShift) {
     this.gearShift = gearShift;
     const input = document.querySelector(".gear-shift");
     input.classList.remove("invalid");
   }
+
   setFuelConsumption(fuelConsumption) {
     this.fuelConsumption = fuelConsumption;
     const input = document.querySelector(".fuel-consumption");
     input.classList.remove("invalid");
   }
+
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
   }
+
   resetValues() {
     this.name = '';
     this.picture = '';
@@ -65,8 +74,8 @@ export default class VehicleModels {
     this.abrv = '';
     this.gearShift = '';
     this.fuelConsumption = '';
-
   }
+
   getVehicleModels = async (brandId) => {
     try {
       this.setIsLoading(true);
@@ -146,6 +155,7 @@ export default class VehicleModels {
       });
     }
   }
+
   storeVehicleModel = async (brandId) => {
     try {
       this.messageApi.open({
@@ -197,6 +207,7 @@ export default class VehicleModels {
       });
     }
   };
+
   editVehicleModel = async (model, brandId) => {
     try {
       this.messageApi.open({
@@ -249,6 +260,7 @@ export default class VehicleModels {
       });
     }
   };
+
   deleteVehicleModel = async (modelId) => {
     try {
       this.messageApi.open({
@@ -270,6 +282,7 @@ export default class VehicleModels {
       });
     }
   };
+  
   storeImage = async (file) => {
     try {
       this.messageApi.open({

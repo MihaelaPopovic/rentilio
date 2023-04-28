@@ -11,6 +11,7 @@ function VehicleModelDelete({ model, onModelSave }) {
     await deleteVehicleModel(model.key);
     await onModelSave();
   };
+  
   const showConfirm = () => {
     confirm({
       title: "Do you want to delete these model?",

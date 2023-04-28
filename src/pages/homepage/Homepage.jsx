@@ -7,6 +7,7 @@ function Homepage() {
   const scrollToCars = () => {
     cars.current.scrollIntoView({ behavior: "smooth" });
   };
+  
   return (
     <>
       <section className="wrapper background">
