@@ -20,46 +20,53 @@ export default class VehicleModels {
     makeAutoObservable(this);
   }
 
-  setName(name) {
+  setName(name, nameRef) {
     this.name = name;
-    const input = document.querySelector(".name");
-    input.classList.remove("invalid");
+    if (nameRef.current.classList.contains('invalid')) {
+      nameRef.current.classList.remove("invalid");
+    }
   }
 
-  setPicture(picture) {
+  setPicture(picture, pictureRef) {
     this.picture = picture;
-    const input = document.querySelector(".picture");
-    input.classList.remove("invalid");
+    if (pictureRef.current.classList.contains('invalid')) {
+      pictureRef.current.classList.remove("invalid");
+    }
   }
 
-  setPrice(price) {
+  setPrice(price, priceRef) {
     this.price = price;
-    const input = document.querySelector(".price");
-    input.classList.remove("invalid");
+    if (priceRef.current.classList.contains('invalid')) {
+      priceRef.current.classList.remove("invalid");
+    }
   }
 
-  setSeats(seats) {
+  setSeats(seats, seatsRef) {
     this.seats = seats;
-    const input = document.querySelector(".seats");
-    input.classList.remove("invalid");
+    if (seatsRef.current.classList.contains('invalid')) {
+      seatsRef.current.classList.remove("invalid");
+    }
   }
 
-  setAbrv(abrv) {
+  setAbrv(abrv, abrvRef) {
     this.abrv = abrv;
-    const input = document.querySelector(".abrv");
-    input.classList.remove("invalid");
+    if (abrvRef.current.classList.contains('invalid')) {
+      abrvRef.current.classList.remove("invalid");
+    }
   }
 
-  setGearShift(gearShift) {
+  setGearShift(gearShift, gearShiftRef) {
     this.gearShift = gearShift;
-    const input = document.querySelector(".gear-shift");
-    input.classList.remove("invalid");
+    if (gearShiftRef.current.classList.contains('invalid')) {
+      gearShiftRef.current.classList.remove("invalid");
+    }
   }
 
-  setFuelConsumption(fuelConsumption) {
+  setFuelConsumption(fuelConsumption, fuelConsumptionRef) {
     this.fuelConsumption = fuelConsumption;
-    const input = document.querySelector(".fuel-consumption");
-    input.classList.remove("invalid");
+    if (fuelConsumptionRef.current.classList.contains('invalid')) {
+      fuelConsumptionRef.current.classList.remove("invalid");
+    }
   }
 
   setIsLoading(isLoading) {
@@ -142,7 +149,7 @@ export default class VehicleModels {
           };
         });
         this.setIsLoading(false);
-        return models; 
+        return models;
       } else {
         this.setIsLoading(false);
         return [];
@@ -282,8 +289,8 @@ export default class VehicleModels {
       });
     }
   };
-  
-  storeImage = async (file) => {
+
+  storeImage = async (file, pictureRef) => {
     try {
       this.messageApi.open({
         type: "info",
@@ -308,7 +315,8 @@ export default class VehicleModels {
         "https://firebasestorage.googleapis.com/v0/b/rentilio-be577.appspot.com/o/" +
         response.data.name +
         "?alt=media&token=" +
-        response.data.downloadTokens
+        response.data.downloadTokens,
+        pictureRef
       );
     } catch (error) {
       this.messageApi.open({

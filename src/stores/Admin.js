@@ -15,16 +15,18 @@ export default class Admin {
     makeAutoObservable(this);
   }
 
-  setEmail(email) {
+  setEmail(email, emailRef) {
     this.email = email;
-    const input = document.querySelector(".email");
-    input.classList.remove("invalid");
+    if (emailRef.current.classList.contains('invalid')) {
+      emailRef.current.classList.remove("invalid");
+    }
   }
 
-  setPassword(password) {
+  setPassword(password, passwordRef) {
     this.password = password;
-    const input = document.querySelector(".password");
-    input.classList.remove("invalid");
+    if (passwordRef.current.classList.contains('invalid')) {
+      passwordRef.current.classList.remove("invalid");
+    }
   }
 
   setIsLoading(isLoading) {
@@ -55,7 +57,7 @@ export default class Admin {
     }
     localStorage.setItem("admin", JSON.stringify(body));
   }
-  
+
   signIn = async (history) => {
     try {
       this.messageApi.open({

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Modal } from "antd";
 import "./VehicleModelFormPopup.scss";
 import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
@@ -11,10 +11,17 @@ function VehicleModelFormPopup({
   model,
   onSave,
 }) {
-
   const VehicleModel = useContext(VehicleModelContext);
 
-  if(isEditing) {
+  const nameRef = useRef();
+  const abrvRef = useRef();
+  const priceRef = useRef();
+  const seatsRef = useRef();
+  const fuelConsumptionRef = useRef();
+  const gearShiftRef = useRef();
+  const pictureRef = useRef();
+
+  if (isEditing) {
     VehicleModel.name = model.name;
     VehicleModel.abrv = model.abrv;
     VehicleModel.price = model.price;
@@ -33,41 +40,34 @@ function VehicleModelFormPopup({
 
   const validateForm = () => {
     let isValid = true;
-      if (!VehicleModel.name) {
-        isValid = false;
-        const input = document.querySelector(".name");
-        input.classList.add("invalid");
-      }
-      if (!VehicleModel.abrv) {
-        isValid = false;
-        const input = document.querySelector(".abrv");
-        input.classList.add("invalid");
-      }
-      if (!VehicleModel.price) {
-        isValid = false;
-        const input = document.querySelector(".price");
-        input.classList.add("invalid");
-      }
-      if (!VehicleModel.seats) {
-        isValid = false;
-        const input = document.querySelector(".seats");
-        input.classList.add("invalid");
-      }
-      if (!VehicleModel.fuelConsumption) {
-        isValid = false;
-        const input = document.querySelector(".fuel-consumption");
-        input.classList.add("invalid");
-      }
-      if (!VehicleModel.gearShift) {
-        isValid = false;
-        const input = document.querySelector(".gear-shift");
-        input.classList.add("invalid");
-      }
-      if (!VehicleModel.picture) {
-        isValid = false;
-        const input = document.querySelector(".picture");
-        input.classList.add("invalid");
-      }
+    if (!VehicleModel.name) {
+      isValid = false;
+      nameRef.current.classList.add("invalid");
+    }
+    if (!VehicleModel.abrv) {
+      isValid = false;
+      abrvRef.current.classList.add("invalid");
+    }
+    if (!VehicleModel.price) {
+      isValid = false;
+      priceRef.current.classList.add("invalid");
+    }
+    if (!VehicleModel.seats) {
+      isValid = false;
+      seatsRef.current.classList.add("invalid");
+    }
+    if (!VehicleModel.fuelConsumption) {
+      isValid = false;
+      fuelConsumptionRef.current.classList.add("invalid");
+    }
+    if (!VehicleModel.gearShift) {
+      isValid = false;
+      gearShiftRef.current.classList.add("invalid");
+    }
+    if (!VehicleModel.picture) {
+      isValid = false;
+      pictureRef.current.classList.add("invalid");
+    }
     return isValid;
   };
 
@@ -90,14 +90,14 @@ function VehicleModelFormPopup({
     if (!file) {
       alert("Please choose a file first!");
     }
-    await VehicleModel.storeImage(file);
+    await VehicleModel.storeImage(file, pictureRef);
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     uploadImage(file);
   };
-  
+
   return (
     <Modal
       title={isEditing ? "Edit vehicle model" : "Add new vehicle model"}
@@ -114,67 +114,74 @@ function VehicleModelFormPopup({
         <div className="input-wrapper">
           <label> Name *</label>
           <input
-            className="name"
+            ref={nameRef}
             required
             type="string"
             defaultValue={isEditing ? model.name : VehicleModel.name}
-            onChange={(e) => VehicleModel.setName(e.target.value)}
+            onChange={(e) => VehicleModel.setName(e.target.value, nameRef)}
           />
         </div>
         <div className="input-wrapper">
           <label> Short name * </label>
           <input
-            className="abrv"
+            ref={abrvRef}
             required
             type="string"
             defaultValue={isEditing ? model.abrv : VehicleModel.abrv}
-            onChange={(e) => VehicleModel.setAbrv(e.target.value)}
+            onChange={(e) => VehicleModel.setAbrv(e.target.value, abrvRef)}
           />
         </div>
         <div className="input-wrapper">
           <label> Price * </label>
           <input
-            className="price"
+            ref={priceRef}
             required
             type="number"
             defaultValue={isEditing ? model.price : VehicleModel.price}
-            onChange={(e) => VehicleModel.setPrice(e.target.value)}
+            onChange={(e) => VehicleModel.setPrice(e.target.value, priceRef)}
           />
         </div>
         <div className="input-wrapper">
           <label> Seats * </label>
           <input
-            className="seats"
+            ref={seatsRef}
             required
             type="number"
             defaultValue={isEditing ? model.seats : VehicleModel.seats}
-            onChange={(e) => VehicleModel.setSeats(e.target.value)}
+            onChange={(e) => VehicleModel.setSeats(e.target.value, seatsRef)}
           />
         </div>
         <div className="input-wrapper">
           <label> Fuel consumption * </label>
           <input
-            className="fuel-consumption"
+            ref={fuelConsumptionRef}
             required
             type="number"
             defaultValue={
               isEditing ? model.fuelConsumption : VehicleModel.fuelConsumption
             }
-            onChange={(e) => VehicleModel.setFuelConsumption(e.target.value)}
+            onChange={(e) =>
+              VehicleModel.setFuelConsumption(
+                e.target.value,
+                fuelConsumptionRef
+              )
+            }
           />
         </div>
         <div className="input-wrapper">
           <label> Gear shift * </label>
           <input
-            className="gear-shift"
+            ref={gearShiftRef}
             required
             type="string"
             defaultValue={isEditing ? model.gearShift : VehicleModel.gearShift}
-            onChange={(e) => VehicleModel.setGearShift(e.target.value)}
+            onChange={(e) =>
+              VehicleModel.setGearShift(e.target.value, gearShiftRef)
+            }
           />
         </div>
         <div className="image-upload">
-          <input className="picture" type="file" onChange={handleFileChange} />
+          <input ref={pictureRef} type="file" onChange={handleFileChange} />
         </div>
       </form>
     </Modal>

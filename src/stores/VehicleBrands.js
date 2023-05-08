@@ -11,18 +11,21 @@ export default class VehicleBrands {
   name;
   abrv;
   isLoading = true;
+
   constructor() {
     makeAutoObservable(this);
   }
-  setName(name) {
+  setName(name, nameRef) {
     this.name = name;
-    const input = document.querySelector(".name");
-    input.classList.remove("invalid");
+    if (nameRef.current.classList.contains('invalid')) {
+      nameRef.current.classList.remove("invalid");
+    }
   }
-  setAbrv(abrv) {
+  setAbrv(abrv, abrvRef) {
     this.abrv = abrv;
-    const input = document.querySelector(".abrv");
-    input.classList.remove("invalid");
+    if (abrvRef.current.classList.contains('invalid')) {
+      abrvRef.current.classList.remove("invalid");
+    }
   }
   setIsLoading(isLoading) {
     this.isLoading = isLoading;
@@ -102,9 +105,26 @@ export default class VehicleBrands {
         );
         if (modelResponse.data[0].document) {
           const models = modelResponse.data.map((data) => {
-            const { name, abrv, seats, fuelConsumption, gearShift, picture, price } = data.document.fields;
+            const {
+              name,
+              abrv,
+              seats,
+              fuelConsumption,
+              gearShift,
+              picture,
+              price
+            } = data.document.fields;
             const id = data.document.name.split("/").pop();
-            const model = { id, name: name.stringValue, abrv: abrv.stringValue, seats: seats.integerValue, fuelConsumption: fuelConsumption.doubleValue, gearShift: gearShift.stringValue, picture: picture.stringValue, price: price.doubleValue };
+            const model = {
+              id,
+              name: name.stringValue,
+              abrv: abrv.stringValue,
+              seats: seats.integerValue,
+              fuelConsumption: fuelConsumption.doubleValue,
+              gearShift: gearShift.stringValue,
+              picture: picture.stringValue,
+              price: price.doubleValue
+            };
             if (returnModels) {
               model.brand = brand;
               return model;

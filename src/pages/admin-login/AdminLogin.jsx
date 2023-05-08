@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "antd";
 import "./AdminLogin.scss";
@@ -7,6 +7,9 @@ import { AdminContext } from "../../contexts/AdminContext";
 function AdminLogin() {
   const adminLogin = useContext(AdminContext);
   const history = useHistory();
+
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   useEffect(() => {
     if (adminLogin.getIsLoggedIn()) {
@@ -18,13 +21,12 @@ function AdminLogin() {
     let isValid = true;
     if (!adminLogin.email) {
       isValid = false;
-      const input = document.querySelector(".email");
-      input.classList.add("invalid");
+      emailRef.current.classList.add("invalid");
+
     }
     if (!adminLogin.password) {
       isValid = false;
-      const input = document.querySelector(".password");
-      input.classList.add("invalid");
+      passwordRef.current.classList.add("invalid");
     }
     return isValid;
   };
@@ -43,21 +45,21 @@ function AdminLogin() {
         <div className="input-wrapper">
           <label> Email * </label>
           <input
-            className="email"
+            ref={emailRef}
             required
             type="email"
             value={adminLogin.email}
-            onChange={(e) => adminLogin.setEmail(e.target.value)}
+            onChange={(e) => adminLogin.setEmail(e.target.value, emailRef)}
           />
         </div>
         <div className="input-wrapper">
           <label> Password * </label>
           <input
-            className="password"
+            ref={passwordRef}
             required
             type="password"
             value={adminLogin.password}
-            onChange={(e) => adminLogin.setPassword(e.target.value)}
+            onChange={(e) => adminLogin.setPassword(e.target.value, passwordRef)}
           />
         </div>
         <Button

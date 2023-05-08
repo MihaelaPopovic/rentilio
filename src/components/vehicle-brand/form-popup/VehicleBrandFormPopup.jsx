@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Modal } from "antd";
 import "./VehicleBrandFormPopup.scss";
 import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
@@ -12,13 +12,16 @@ function VehicleBrandFormPopup({
 }) {
   const VehicleBrand = useContext(VehicleBrandContext);
 
+  const nameRef = useRef();
+  const abrvRef = useRef();
+
   if (isEditing) {
     VehicleBrand.name = brand.name;
     VehicleBrand.abrv = brand.abrv;
   }
 
   const [confirmLoading, setConfirmLoading] = useState(false);
-  
+
   const handleCancel = () => {
     VehicleBrand.resetValues();
     setIsModalOpen(false);
@@ -28,13 +31,11 @@ function VehicleBrandFormPopup({
     let isValid = true;
     if (!VehicleBrand.name) {
       isValid = false;
-      const input = document.querySelector(".name");
-      input.classList.add("invalid");
+      nameRef.current.className = "invalid";
     }
     if (!VehicleBrand.abrv) {
       isValid = false;
-      const input = document.querySelector(".abrv");
-      input.classList.add("invalid");
+      abrvRef.current.className = "invalid";
     }
     return isValid;
   };
@@ -70,21 +71,21 @@ function VehicleBrandFormPopup({
         <div className="input-wrapper">
           <label> Name *</label>
           <input
-          className="name"
+            ref={nameRef}
             required
             type="string"
             defaultValue={isEditing ? brand.name : VehicleBrand.name}
-            onChange={(e) => VehicleBrand.setName(e.target.value)}
+            onChange={(e) => VehicleBrand.setName(e.target.value, nameRef)}
           />
         </div>
         <div className="input-wrapper">
           <label> Short name * </label>
           <input
-          className="abrv"
+            ref={abrvRef}
             required
             type="string"
             defaultValue={isEditing ? brand.abrv : VehicleBrand.abrv}
-            onChange={(e) => VehicleBrand.setAbrv(e.target.value)}
+            onChange={(e) => VehicleBrand.setAbrv(e.target.value, abrvRef)}
           />
         </div>
       </form>
