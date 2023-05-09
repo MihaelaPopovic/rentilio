@@ -1,5 +1,7 @@
 import {
-  makeAutoObservable
+  makeObservable,
+  observable,
+  action
 } from "mobx";
 import axios from "axios";
 import {
@@ -11,8 +13,15 @@ export default class Admin {
   email;
   password;
   isLoading = false;
-  constructor() {
-    makeAutoObservable(this);
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+    makeObservable(this, {
+      email: observable,
+      password: observable,
+      setEmail: action,
+      setPassword: action
+    })
   }
 
   setEmail(email, emailRef) {

@@ -1,5 +1,7 @@
 import {
-  makeAutoObservable
+  makeObservable,
+  observable,
+  action
 } from "mobx";
 import axios from "axios";
 import {
@@ -16,8 +18,31 @@ export default class VehicleModels {
   picture;
   isLoading = false;
 
-  constructor() {
-    makeAutoObservable(this);
+  constructor(name, abrv, seats, price, gearShift, fuelConsumption, picture) {
+    this.name = name;
+    this.abrv = abrv;
+    this.seats = seats;
+    this.price = price;
+    this.gearShift = gearShift;
+    this.fuelConsumption = fuelConsumption;
+    this.picture = picture;
+    makeObservable(this, {
+      name: observable,
+      abrv: observable,
+      seats: observable,
+      price: observable,
+      gearShift: observable,
+      fuelConsumption: observable,
+      picture: observable,
+      setName: action,
+      setPicture: action,
+      setPrice: action,
+      setSeats: action,
+      setAbrv: action,
+      setGearShift: action,
+      setFuelConsumption: action,
+      setIsLoading: action,
+    })
   }
 
   setName(name, nameRef) {
