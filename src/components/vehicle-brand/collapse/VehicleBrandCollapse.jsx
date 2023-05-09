@@ -6,6 +6,7 @@ import VehicleModelsTable from "../../vehicle-model/table/VehicleModelsTable";
 import VehicleModelFormCreate from "../../vehicle-model/form-create/VehicleModelFormCreate";
 import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
 import Loader from "../../loader/Loader";
+
 function VehicleBrandCollapse({ brand, onSave }) {
 
   const { getVehicleModels } = useContext(VehicleModelContext);
@@ -37,7 +38,7 @@ function VehicleBrandCollapse({ brand, onSave }) {
           <Loader />
         ) : (
           <>
-            <VehicleModelFormCreate brand={brand} onModelSave={onModelSave} />
+          <VehicleModelFormCreate brand={brand} onModelSave={onModelSave} /> 
             <VehicleModelsTable
               models={brand.models}
               brand={brand}
