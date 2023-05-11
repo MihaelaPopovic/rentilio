@@ -174,74 +174,152 @@ async function storeImage(file) {
     response.data.downloadTokens
   );
 }
-async function orderBy(key, direction) {
-  try {
-    let modelResponse;
-    if (this.lastVehicleModelName === "") {
-      modelResponse = await axios.get(
-        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/?orderBy=" +
-          key +
-          "%20" +
-          direction +
-          "&pageSize=6"
-      );
-    } else {
-      modelResponse = await axios.get(
-        "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/?orderBy=" +
-          key +
-          "%20" +
-          direction +
-          "&pageSize=6&pageToken=" +
-          this.lastVehicleModelName
-      );
-    }
-    this.lastVehicleModelName = modelResponse.data.nextPageToken;
-    const models = modelResponse.data.documents.map((data) => {
-      const model = {
-        id: data.name.split("/").pop(),
-        name: data.fields.name.stringValue,
-        abrv: data.fields.abrv.stringValue,
-        seats: data.fields.seats.integerValue,
-        fuelConsumption: data.fields.fuelConsumption.doubleValue,
-        gearShift: data.fields.gearShift.stringValue,
-        picture: data.fields.picture.stringValue,
-        price: data.fields.price.doubleValue,
-      };
-      return model;
-    });
-    return models;
-  } catch (error) {
-    this.messageApi.open({
-      type: "warning",
-      content: "Something went wrong!",
-    });
+async function filterBy(search, nextToken) {
+  const query = {
+    structuredQuery: {
+      from: [{ collectionId: "vehicle_models" }],
+      where: {
+        compositeFilter: {
+          op: "OR",
+          filters: [
+            {
+              fieldFilter: {
+                field: { fieldPath: "name" },
+                op: "array-contains",
+                value: { stringValue: search },
+              },
+            },
+          ],
+        },
+      },
+    },
+  };
+ 
+  const modelResponse = await axios.post("https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents:runQuery", query);
+  const models = modelResponse.data.documents.map((data) => {
+    const model = {
+      id: data.name.split("/").pop(),
+      name: data.fields.name.stringValue,
+      abrv: data.fields.abrv.stringValue,
+      seats: data.fields.seats.integerValue,
+      fuelConsumption: data.fields.fuelConsumption.doubleValue,
+      gearShift: data.fields.gearShift.stringValue,
+      picture: data.fields.picture.stringValue,
+      price: data.fields.price.doubleValue,
+    };
+    return model;
+  });
+  return {
+    models: models,
+    nextPageToken: modelResponse.data.nextPageToken,
+  };
+}
+async function orderBy(sortBy, nextToken) {
+  let key;
+  let direction;
+  switch (sortBy) {
+    case "priceAscending":
+      key = "price";
+      direction = "asc";
+      break;
+    case "priceDescending":
+      key = "price";
+      direction = "desc";
+      break;
+    case "nameAscending":
+      key = "name";
+      direction = "asc";
+      break;
+    case "nameDescending":
+      key = "name";
+      direction = "desc";
+      break;
+    default:
+      return;
   }
+  let url = "";
+  if (nextToken === "") {
+    url =
+      "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/?orderBy=" +
+      key +
+      "%20" +
+      direction +
+      "&pageSize=6";
+  } else {
+    url =
+      "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/?orderBy=" +
+      key +
+      "%20" +
+      direction +
+      "&pageSize=6&pageToken=" +
+      nextToken;
+  }
+  const modelResponse = await axios.get(url);
+  const models = modelResponse.data.documents.map((data) => {
+    const model = {
+      id: data.name.split("/").pop(),
+      name: data.fields.name.stringValue,
+      abrv: data.fields.abrv.stringValue,
+      seats: data.fields.seats.integerValue,
+      fuelConsumption: data.fields.fuelConsumption.doubleValue,
+      gearShift: data.fields.gearShift.stringValue,
+      picture: data.fields.picture.stringValue,
+      price: data.fields.price.doubleValue,
+    };
+    return model;
+  });
+  return {
+    models: models,
+    nextPageToken: modelResponse.data.nextPageToken,
+  };
+}
+async function getPaginateModels(nextToken) {
+  let apiUrl;
+  if (nextToken) {
+    apiUrl =
+      "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/?pageSize=6&pageToken=" +
+      nextToken;
+  } else {
+    apiUrl =
+      "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models/?pageSize=6";
+  }
+  const modelResponse = await axios.get(apiUrl);
+  const models = modelResponse.data.documents.map((data) => {
+    const model = {
+      id: data.name.split("/").pop(),
+      name: data.fields.name.stringValue,
+      abrv: data.fields.abrv.stringValue,
+      seats: data.fields.seats.integerValue,
+      fuelConsumption: data.fields.fuelConsumption.doubleValue,
+      gearShift: data.fields.gearShift.stringValue,
+      picture: data.fields.picture.stringValue,
+      price: data.fields.price.doubleValue,
+    };
+    return model;
+  });
+  return {
+    models: models,
+    nextPageToken: modelResponse.data.nextPageToken,
+  };
 }
 async function getAllModels() {
-  try {
-    const modelResponse = await axios.get(
-      "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models"
-    );
-    const models = modelResponse.data.documents.map((data) => {
-      const model = {
-        id: data.name.split("/").pop(),
-        name: data.fields.name.stringValue,
-        abrv: data.fields.abrv.stringValue,
-        seats: data.fields.seats.integerValue,
-        fuelConsumption: data.fields.fuelConsumption.doubleValue,
-        gearShift: data.fields.gearShift.stringValue,
-        picture: data.fields.picture.stringValue,
-        price: data.fields.price.doubleValue,
-      };
-      return model;
-    });
-    return models;
-  } catch (error) {
-    this.messageApi.open({
-      type: "warning",
-      content: "Something went wrong!",
-    });
-  }
+  const modelResponse = await axios.get(
+    "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents/vehicle_models"
+  );
+  const models = modelResponse.data.documents.map((data) => {
+    const model = {
+      id: data.name.split("/").pop(),
+      name: data.fields.name.stringValue,
+      abrv: data.fields.abrv.stringValue,
+      seats: data.fields.seats.integerValue,
+      fuelConsumption: data.fields.fuelConsumption.doubleValue,
+      gearShift: data.fields.gearShift.stringValue,
+      picture: data.fields.picture.stringValue,
+      price: data.fields.price.doubleValue,
+    };
+    return model;
+  });
+  return models;
 }
 
 export {
@@ -251,5 +329,7 @@ export {
   deleteVehicleModel,
   storeImage,
   orderBy,
+  getPaginateModels,
   getAllModels,
+  filterBy
 };
