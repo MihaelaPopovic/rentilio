@@ -1,15 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Collapse } from "antd";
 import VehicleBrandFormEdit from "../form-edit/VehicleBrandFormEdit";
 import VehicleBrandDelete from "../delete/VehicleBrandDelete";
 import VehicleModelsTable from "../../vehicle-model/table/VehicleModelsTable";
 import VehicleModelFormCreate from "../../vehicle-model/form-create/VehicleModelFormCreate";
-import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
 import Loader from "../../loader/Loader";
+import { getVehicleModels } from "../../../services/VehicleModelsService";
 
 function VehicleBrandCollapse({ brand, onSave }) {
-
-  const { getVehicleModels } = useContext(VehicleModelContext);
   const { Panel } = Collapse;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,7 +21,7 @@ function VehicleBrandCollapse({ brand, onSave }) {
   const onModelSave = async () => {
     await fetchModels();
   };
-  
+
   const genExtra = () => (
     <>
       <VehicleBrandFormEdit brand={brand} onSave={onSave} />
@@ -38,7 +36,7 @@ function VehicleBrandCollapse({ brand, onSave }) {
           <Loader />
         ) : (
           <>
-          <VehicleModelFormCreate brand={brand} onModelSave={onModelSave} /> 
+            <VehicleModelFormCreate brand={brand} onModelSave={onModelSave} />
             <VehicleModelsTable
               models={brand.models}
               brand={brand}

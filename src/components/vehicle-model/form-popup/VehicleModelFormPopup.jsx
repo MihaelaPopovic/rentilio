@@ -2,6 +2,12 @@ import React, { useContext, useState, useRef } from "react";
 import { Modal } from "antd";
 import "./VehicleModelFormPopup.scss";
 import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
+import {
+  editVehicleModel,
+  storeVehicleModel,
+  storeImage,
+} from "../../../services/VehicleModelsService";
+import { message } from "antd";
 
 function VehicleModelFormPopup({
   isModalOpen,
@@ -75,11 +81,36 @@ function VehicleModelFormPopup({
     e.preventDefault();
     if (validateForm()) {
       setConfirmLoading(true);
-      if (isEditing) {
-        await VehicleModel.editVehicleModel(model, brand.id);
-      } else {
-        await VehicleModel.storeVehicleModel(brand.id);
+      try {
+        if (isEditing) {
+          message.open({
+            type: "info",
+            content: "Updating brand...",
+          });
+          await editVehicleModel(VehicleModel, model.key, brand.id);
+          message.open({
+            type: "success",
+            content: "Brand updated!",
+          });
+        } else {
+          message.open({
+            type: "info",
+            content: "Saving brand...",
+          });
+          await storeVehicleModel(VehicleModel, brand.id);
+          message.open({
+            type: "success",
+            content: "Brand saved!",
+          });
+        }
+      } catch (error) {
+        message.open({
+          type: "warning",
+          content: "Something went wrong!",
+        });
       }
+      VehicleModel.resetValues();
+
       await onSave();
       setIsModalOpen(false);
       setConfirmLoading(false);
@@ -90,7 +121,23 @@ function VehicleModelFormPopup({
     if (!file) {
       alert("Please choose a file first!");
     }
-    await VehicleModel.storeImage(file, pictureRef);
+    try {
+      message.open({
+        type: "info",
+        content: "Uploading image...",
+      });
+      const image = await storeImage(file);
+      VehicleModel.setPicture(image, pictureRef);
+      message.open({
+        type: "success",
+        content: "Image uploaded!",
+      });
+    } catch (error) {
+      message.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
+    }
   };
 
   const handleFileChange = (event) => {

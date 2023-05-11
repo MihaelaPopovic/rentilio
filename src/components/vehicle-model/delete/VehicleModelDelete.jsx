@@ -1,17 +1,33 @@
-import React, { useContext } from "react";
+import React from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Modal } from "antd";
-import { VehicleModelContext } from "../../../contexts/VehicleModelContext";
+import { deleteVehicleModel } from "../../../services/VehicleModelsService";
+import { message } from "antd";
 
 function VehicleModelDelete({ model, onModelSave }) {
   const { confirm } = Modal;
-  const { deleteVehicleModel } = useContext(VehicleModelContext);
 
   const handleDelete = async () => {
+    try {
+      message.open({
+        type: "info",
+        content: "Deleting model...",
+      });
+      await deleteVehicleModel(model.key);
+      message.open({
+        type: "success",
+        content: "Model deleted!",
+      });
+    } catch (error) {
+      message.open({
+        type: "warning",
+        content: "Something went wrong!",
+      });
+    }
     await deleteVehicleModel(model.key);
     await onModelSave();
   };
-  
+
   const showConfirm = () => {
     confirm({
       title: "Do you want to delete these model?",

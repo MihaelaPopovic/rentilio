@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import { Button } from "antd";
 import "./AdminLogin.scss";
 import { AdminContext } from "../../contexts/AdminContext";
+import { signIn } from "./../../services/AdminService";
+import { message } from "antd";
 
 function AdminLogin() {
   const adminLogin = useContext(AdminContext);
@@ -22,7 +24,6 @@ function AdminLogin() {
     if (!adminLogin.email) {
       isValid = false;
       emailRef.current.classList.add("invalid");
-
     }
     if (!adminLogin.password) {
       isValid = false;
@@ -34,7 +35,24 @@ function AdminLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      await adminLogin.signIn(history);
+      try {
+        message.open({
+          type: "info",
+          content: "Logging in...",
+        });
+        const response = await signIn(adminLogin);
+        message.open({
+          type: "success",
+          content: "You are logged in!",
+        });
+        adminLogin.setLoggedIn(response.data);
+        history.push("/dashboard");
+      } catch (error) {
+        message.open({
+          type: "warning",
+          content: "Something went wrong!",
+        });
+      }
     }
   };
 
@@ -59,7 +77,9 @@ function AdminLogin() {
             required
             type="password"
             value={adminLogin.password}
-            onChange={(e) => adminLogin.setPassword(e.target.value, passwordRef)}
+            onChange={(e) =>
+              adminLogin.setPassword(e.target.value, passwordRef)
+            }
           />
         </div>
         <Button

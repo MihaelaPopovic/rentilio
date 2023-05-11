@@ -1,19 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminDashboard.scss";
-import { VehicleBrandContext } from "../../contexts/VehicleBrandContext";
 import VehicleBrands from "../../components/vehicle-brand/brands/VehicleBrands";
 import VehicleBrandFormCreate from "../../components/vehicle-brand/form-create/VehicleBrandFormCreate";
 import Loader from "../../components/loader/Loader";
-
+import { getVehicleBrands } from "../../services/VehicleBrandService";
 function AdminDashboard() {
-  const { getVehicleBrands, isLoading } = useContext(VehicleBrandContext);
-  const [brands, setBrands] = useState();
+  const [brands, setBrands] = useState([]);
+  const [isLoading, setIsLoading] = useState();
 
-  const fetchData = async () => {
-    const loadedBrands = await getVehicleBrands();
-    setBrands(loadedBrands);
-  };
-  
+  async function fetchData() {
+    try {
+      setIsLoading(true);
+      const loadedBrands = await getVehicleBrands();
+      setBrands(loadedBrands);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+
   const handleSave = async () => {
     await fetchData();
   };

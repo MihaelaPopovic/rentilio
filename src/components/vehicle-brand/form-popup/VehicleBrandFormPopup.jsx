@@ -2,7 +2,11 @@ import React, { useContext, useState, useRef } from "react";
 import { Modal } from "antd";
 import "./VehicleBrandFormPopup.scss";
 import { VehicleBrandContext } from "../../../contexts/VehicleBrandContext";
-
+import {
+  editVehicleBrand,
+  storeVehicleBrand,
+} from "../../../services/VehicleBrandService";
+import { message } from "antd";
 function VehicleBrandFormPopup({
   isModalOpen,
   setIsModalOpen,
@@ -44,11 +48,35 @@ function VehicleBrandFormPopup({
     e.preventDefault();
     if (validateForm()) {
       setConfirmLoading(true);
-      if (isEditing) {
-        await VehicleBrand.editVehicleBrand(brand);
-      } else {
-        await VehicleBrand.storeVehicleBrand();
+      try {
+        if (isEditing) {
+          message.open({
+            type: "info",
+            content: "Updating brand...",
+          });
+          await editVehicleBrand(VehicleBrand, brand.id);
+          message.open({
+            type: "success",
+            content: "Brand updated!",
+          });
+        } else {
+          message.open({
+            type: "info",
+            content: "Saving brand...",
+          });
+          await storeVehicleBrand(VehicleBrand);
+          message.open({
+            type: "success",
+            content: "Brand saved!",
+          });
+        }
+      } catch (error) {
+        message.open({
+          type: "warning",
+          content: "Something went wrong!",
+        });
       }
+      VehicleBrand.resetValues();
       await onSave();
       setIsModalOpen(false);
       setConfirmLoading(false);
