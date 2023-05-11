@@ -174,19 +174,82 @@ async function storeImage(file) {
     response.data.downloadTokens
   );
 }
-async function filterBy(search, nextToken) {
+async function filterBy(search) {
   const query = {
     structuredQuery: {
-      from: [{ collectionId: "vehicle_models" }],
+      from: [
+        {
+          collectionId: "vehicle_models",
+        },
+      ],
       where: {
         compositeFilter: {
           op: "OR",
           filters: [
             {
               fieldFilter: {
-                field: { fieldPath: "name" },
-                op: "array-contains",
-                value: { stringValue: search },
+                field: {
+                  fieldPath: "name",
+                },
+                op: "EQUAL",
+                value: {
+                  stringValue: search,
+                },
+              },
+            },
+            {
+              fieldFilter: {
+                field: {
+                  fieldPath: "abrv",
+                },
+                op: "EQUAL",
+                value: {
+                  stringValue: search,
+                },
+              },
+            },
+            {
+              fieldFilter: {
+                field: {
+                  fieldPath: "seats",
+                },
+                op: "EQUAL",
+                value: {
+                  integerValue: parseInt(search) ? parseInt(search) : 0,
+                },
+              },
+            },
+            {
+              fieldFilter: {
+                field: {
+                  fieldPath: "fuelConsumption",
+                },
+                op: "EQUAL",
+                value: {
+                  doubleValue: parseInt(search) ? parseInt(search) : 0,
+                },
+              },
+            },
+            {
+              fieldFilter: {
+                field: {
+                  fieldPath: "gearShift",
+                },
+                op: "EQUAL",
+                value: {
+                  stringValue: search,
+                },
+              },
+            },
+            {
+              fieldFilter: {
+                field: {
+                  fieldPath: "price",
+                },
+                op: "EQUAL",
+                value: {
+                  doubleValue: parseInt(search) ? parseInt(search) : 0,
+                },
               },
             },
           ],
@@ -194,25 +257,25 @@ async function filterBy(search, nextToken) {
       },
     },
   };
- 
-  const modelResponse = await axios.post("https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents:runQuery", query);
-  const models = modelResponse.data.documents.map((data) => {
+
+  const modelResponse = await axios.post(
+    "https://firestore.googleapis.com/v1/projects/rentilio-be577/databases/(default)/documents:runQuery",
+    query
+  );
+  const models = modelResponse.data.map((data) => {
     const model = {
-      id: data.name.split("/").pop(),
-      name: data.fields.name.stringValue,
-      abrv: data.fields.abrv.stringValue,
-      seats: data.fields.seats.integerValue,
-      fuelConsumption: data.fields.fuelConsumption.doubleValue,
-      gearShift: data.fields.gearShift.stringValue,
-      picture: data.fields.picture.stringValue,
-      price: data.fields.price.doubleValue,
+      id: data.document.name.split("/").pop(),
+      name: data.document.fields.name.stringValue,
+      abrv: data.document.fields.abrv.stringValue,
+      seats: data.document.fields.seats.integerValue,
+      fuelConsumption: data.document.fields.fuelConsumption.doubleValue,
+      gearShift: data.document.fields.gearShift.stringValue,
+      picture: data.document.fields.picture.stringValue,
+      price: data.document.fields.price.doubleValue,
     };
     return model;
   });
-  return {
-    models: models,
-    nextPageToken: modelResponse.data.nextPageToken,
-  };
+  return models;
 }
 async function orderBy(sortBy, nextToken) {
   let key;
@@ -331,5 +394,5 @@ export {
   orderBy,
   getPaginateModels,
   getAllModels,
-  filterBy
+  filterBy,
 };

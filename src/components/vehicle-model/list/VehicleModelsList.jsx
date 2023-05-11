@@ -10,36 +10,53 @@ import {
   AiOutlineArrowDown,
 } from "react-icons/ai";
 import { Button, Dropdown } from "antd";
-import { orderBy, getPaginateModels, getAllModels, filterBy } from "./../../../services/VehicleModelsService";
+import {
+  orderBy,
+  getPaginateModels,
+  getAllModels,
+  filterBy,
+} from "./../../../services/VehicleModelsService";
 import { message } from "antd";
-function VehicleModelsList() {
-  const [ nextPageToken, setNextPageToken ] = useState('');
-  const [ nextOrderByPageToken, setNextOrderByPageToken ] = useState('');
 
+const tokensMap = new Map();
+const orderByTokensMap = new Map();
+
+function VehicleModelsList() {
   const [models, setModels] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [orderByKey, setOrderByKey] = useState('');
+  const [orderByKey, setOrderByKey] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const cars = useRef(null);
+
+  //Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const scrollToCars = () => {
     cars.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    fetchData();
-  }, [getPaginateModels, orderBy, getAllModels]);
+    if (!orderByKey) {
+      fetchData();
+    } else {
+      orderByRequest(orderByKey, orderByTokensMap.get(currentPage - 1) || "");
+    }
+  }, [currentPage, orderByKey]);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const totalModels = await getAllModels();
       setTotalPages(Math.ceil(totalModels.length / itemsPerPage));
-
-      const loadedModels = await getPaginateModels(nextPageToken);
+      const loadedModels = await getPaginateModels(
+        tokensMap.get(currentPage - 1)
+      );
       if (loadedModels.nextPageToken) {
-        setNextPageToken(loadedModels.nextPageToken);
+        if (!tokensMap.get(currentPage)) {
+          tokensMap.set(currentPage, loadedModels.nextPageToken);
+        }
       }
       setModels(loadedModels.models);
       setIsLoading(false);
@@ -52,16 +69,16 @@ function VehicleModelsList() {
       });
     }
   };
-
   //Filtering
   const [searchQuery, setSearchQuery] = useState("");
-
-  const searchModels = (search) => {
+  const setQuery = (search) => {
     setSearchQuery(search);
-    if (search) {
-     filterModels(search);
+  };
+  const searchModels = () => {
+    if (searchQuery) {
+     filterModels(searchQuery);
     } else {
-      setModels([]);
+      fetchData();
     }
     setCurrentPage(1);
   };
@@ -69,13 +86,9 @@ function VehicleModelsList() {
   const filterModels = async (search) => {
     try {
       setIsLoading(true);
-      console.log(search);
-      const loadedModels = await filterBy(search)
-    /*    if (loadedModels.nextPageToken) {
-         setNextOrderByPageToken(loadedModels.nextPageToken);
-       } */
-       setModels(loadedModels.models);
-       setIsLoading(false);
+      const loadedModels = await filterBy(search);
+      setModels(loadedModels);
+      setIsLoading(false);
      } catch (error) {
        setIsLoading(false);
  
@@ -85,34 +98,28 @@ function VehicleModelsList() {
        });
      }
   }
-
-  //Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-
+//Pagination
   const pageChanged = (pageNumber) => {
     scrollToCars();
     setCurrentPage(pageNumber);
-    if(orderByKey !== '') {
-      orderByRequest(orderByKey, nextOrderByPageToken);
-    } else {
-      fetchData();
-    }
   };
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(
-        <li
-          key={i}
-          onClick={(e) => pageChanged(i)}
-          className={i === currentPage ? "page-number active" : "page-number"}
-        >
-          {i}
-        </li>
-      );
+    for (let i = currentPage; i < currentPage + 2; i++) {
+      if (i <= totalPages) {
+        pageNumbers.push(
+          <li
+            key={i}
+            onClick={(e) => pageChanged(i)}
+            className={i === currentPage ? "page-number active" : "page-number"}
+          >
+            {i}
+          </li>
+        );
+      }
     }
+
     return pageNumbers;
   };
 
@@ -140,20 +147,22 @@ function VehicleModelsList() {
     },
   ];
   const onClick = ({ key }) => {
-    setNextOrderByPageToken(null);
-    orderByRequest(key, '');
+    orderByTokensMap.clear();
+    setOrderByKey(key);
     setCurrentPage(1);
   };
-  
-  const orderByRequest = async (sortBy, nextToken ) => {
+
+  const orderByRequest = async (sortBy, nextToken) => {
     try {
       setIsLoading(true);
 
-     const loadedModels = await orderBy(sortBy, nextToken)
+      const loadedModels = await orderBy(sortBy, nextToken);
+
       if (loadedModels.nextPageToken) {
-        setNextOrderByPageToken(loadedModels.nextPageToken);
+        if (!orderByTokensMap.get(currentPage)) {
+          orderByTokensMap.set(currentPage, loadedModels.nextPageToken);
+        }
       }
-      setOrderByKey(sortBy);
       setModels(loadedModels.models);
       setIsLoading(false);
     } catch (error) {
@@ -171,15 +180,18 @@ function VehicleModelsList() {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="cars-wrapper" >
+        <div className="cars-wrapper">
           <div className="input-wrapper">
             <input
               className="input"
               type="text"
               placeholder="Search..."
               value={searchQuery}
-              onChange={(e) => searchModels(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
             />
+             <Button type="primary" className="sort" onClick={(e) => searchModels()}>
+              Search
+            </Button>
           </div>
           <Dropdown
             menu={{
